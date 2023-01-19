@@ -1,4 +1,7 @@
 ---
-
+layout: layout.njk
 ---
-yo yo
+
+# Architecture is here {#here}
+
+# Soon {#soon}

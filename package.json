@@ -9,7 +9,9 @@
   "private": false,
   "dependencies": {
     "@11ty/eleventy": "^2.0.0-beta.1",
-    "install": "^0.13.0"
+    "eleventy-plugin-pwa": "^1.0.8",
+    "install": "^0.13.0",
+    "markdown-it-attrs": "^4.1.6"
   },
   "scripts": {
     "start": "eleventy --serve --input=pages --output=docs"
