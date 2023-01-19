@@ -1,0 +1,17 @@
+{
+  "name": "galerie-architektury-brno",
+  "version": "1.0.0",
+  "description": "Oficiální webová prezentace Galerie Architekrury v Brně",
+  "main": "docs/index.html",
+  "repository": "https://github.com/erikvanek/gab.git",
+  "author": "Erik Vanek <vanek.erik@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.0-beta.1",
+    "install": "^0.13.0"
+  },
+  "scripts": {
+    "start": "eleventy --serve --input=pages --output=docs"
+  }
+}
