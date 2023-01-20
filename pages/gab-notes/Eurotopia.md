@@ -1,0 +1,6 @@
+- research project by [[Max Steverding]] on ???
+- https://www.oma.com/lectures/roadmap-2050-a-practical-guide-to-a-prosperous-low-carbon-europe
+- https://en.wikipedia.org/wiki/Reinier_de_Graaf_(architect)
+- https://commons.wikimedia.org/wiki/File:OMA_Eneropa.jpg#globalusage
+- https://www.researchgate.net/figure/OMA-OMA-Eneropa-EuroGrid-Extract-from-Roadmap-2050-A-practical-guide-to-a_fig10_321625853
+- https://www.theguardian.com/artanddesign/gallery/2010/may/07/architecture-rem-koolhaas
