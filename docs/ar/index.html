@@ -1,0 +1,125 @@
+<script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+<!-- <script>
+    AFRAME.registerComponent('markerhandler', {
+        init: function () {
+            this.el.sceneEl.addEventListener('markerFound', () => {
+                // redirect to custom URL
+                //   window.location = 'https://github.com/AR-js-org/AR.js';
+                console.log('yo');
+            });
+        },
+    });
+</script> -->
+
+<style>
+    .buttons {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+
+    .say-hi-button {
+        padding: 0.25em;
+        border-radius: 4px;
+        border: none;
+        background: white;
+        color: black;
+        width: 4em;
+        height: 2em;
+    }
+</style>
+
+<body style="margin: 0px; overflow: hidden">
+    <div class="buttons">
+        <button class="say-hi-button" onClick="javascript:yo()">SAY HI!</button>
+    </div>
+    <!-- <a-scene
+        arjs="debugUIEnabled: true; detectionMode: mono_and_matrix; debug: true; matrixCodeType: 3x3_PARITY65; labelingMode: white_region; canvasWidth: 320; canvasHeight: 240"
+        > -->
+    <a-scene embedded arjs="sourceType: webcam;" style="height: 90%">
+        <!-- <a-marker preset="hiro">
+            <a-sphere radius="1000" color="#888888"></a-sphere>
+        </a-marker> -->
+
+        <!-- <a-marker
+            type="pattern"
+            preset="custom"
+            url="https://localhost:8080/img/ar-markers/pattern-marker-x.patt"
+            emitEvents="true"
+            smooth-count="10"
+            smooth-threshold="200"
+        >
+            <a-sphere radius="600" color="#666666"></a-sphere>
+        </a-marker> -->
+
+        <a-marker preset="hiro">
+            <a-entity
+                position="0 0 0"
+                scale="0.05 0.05 0.05"
+                gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+            ></a-entity>
+        </a-marker>
+
+        <a-marker
+            type="pattern"
+            preset="pattern"
+            url="https://localhost:8080/img/ar-markers/pattern-hiro-x.patt"
+        >
+            <a-entity
+                position="0 0 0"
+                scale="0.05 0.05 0.05"
+                gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+            ></a-entity>
+        </a-marker>
+
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+
+<script>
+    async function yo() {
+        console.log('yo')
+        console.log('wtf')
+        // console.log('yo')
+        // const shot = document
+        //     .querySelector('a-scene')
+        //     .components
+        //     .screenshot
+        //     .getCanvas('equirectangular');
+        // console.log(shot)
+        // const capt = document
+        //     .querySelector('a-scene')
+        //     .components
+        //     .screenshot
+        //     .capture('perspective')
+        // console.log(capt)
+
+        const canvas = document.querySelector('canvas');
+        // if (canvas1.getContext) {
+        const ctx = canvas.getContext('2d');
+        const myImage = canvas.toDataURL('image/png');
+
+        let base64Image = myImage.split(';base64,').pop();
+
+        const date = new Date().getTime();
+
+        const [fileHandle] = window.showOpenFilePicker();
+        const writable = await fileHandle.createWritable();
+        await writable.write(myImage);
+        await writable.close();
+
+
+        // .then(wtf => {
+        //     console.log(wtf)
+        // })
+        // const writeAble = await fileHan
+    };
+</script>
