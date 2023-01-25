@@ -1,0 +1,6 @@
+- https://architecture2030.org/
+- Architecture 2030 je nezisková, nestranická a nezávislá organizace založená v roce 2002 v reakci na probíhající klimatickou krizi.
+- "Posláním iniciativy Architecture 2030 je rychle přeměnit zastavěné prostředí z hlavního emitenta skleníkových plynů na ústřední řešení klimatické krize. Již téměř dvě desetiletí zajišťujeme vedení a navrhujeme opatření potřebná k dosažení snížení emisí CO2 pro vysokou pravděpodobnost omezení oteplování planety na 1,5 °C." ^e4bb6c
+- Náš akční plán má dva hlavní cíle:
+	- Do roku 2030 dosáhnout dramatického snížení spotřeby energie a emisí CO2 v zastavěném prostředí a do roku 2040 úplně přestat produkovat emise CO2 z fosilních paliv
+	- Podpořit rozvoj udržitelných, odolných, spravedlivých a bezuhlíkových stavebních komunit a měst.

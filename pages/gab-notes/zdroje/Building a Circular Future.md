@@ -1,0 +1,6 @@
+- kniha zabývající se cirkulární ekonomikou v kontextu architektonické praxe
+- https://gxn.3xn.com/project/building-circular-future
+- ke stažení [zde](http://www.buildingacircularfuture.com/book)
+- Autoři Kasper Guldager Jensen, John Sommer
+- Obsah byl vytvořen na základě rozsáhlého výzkumu, sdílení znalostí a workshopů mezi společnostmi [[3XN]] - GXN Innovation (architekti), MT Højgaard (dodavatelé), Kingo Karlsen (demoliční firmy), VIA University College (stavební architekti), Vugge til Vugge Danmark (oběhové hospodářství) a Henrik Innovation (stavební inovace).
+- Kniha představuje všechna zjištění, případové studie, podklady a souvislosti projektu Budování oběhové budoucnosti a skládá se ze tří hlavních kapitol: Design for Disassembly, Material Passport a Circular Economy. Veškerý obsah pochází z rozsáhlého výzkumu nebo z workshopů s partnery napříč průmyslovými odvětvími.

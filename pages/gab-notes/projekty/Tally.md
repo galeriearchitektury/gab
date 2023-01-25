@@ -1,0 +1,3 @@
+-  První aplikace LCA, která umožňuje vypočítat dopady výběru stavebních materiálů na životní prostředí přímo v modelu Autodesk Revit
+- Aplikace Tally umožňuje architektům a inženýrům pracujícím v softwaru Revit kvantifikovat dopad stavebních materiálů na životní prostředí pro analýzu celé budovy i pro srovnávací analýzy možností návrhu. Při práci na modelu Revit může uživatel definovat vztahy mezi prvky BIM a stavebními materiály z databáze Tally. ^12322c
+- https://choosetally.com/

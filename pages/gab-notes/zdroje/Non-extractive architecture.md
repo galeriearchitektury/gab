@@ -1,0 +1,3 @@
+-   NON-EXTRACTIVE ARCHITECTURE: ON DESIGNING WITHOUT DEPLETION
+- https://www.sternberg-press.com/product/non-extractive-architecture-vol-1/
+- kniha vytváří teoretický rámec pro nový přístup k architektuře - přístup založený na dlouhodobém myšlení, materiálových zdrojích a jejich následné krajině a integraci komunitních hodnot do stavebnictví. Prostřednictvím řady esejů architektů, geografů, historiků, ekonomů, urbanistů a filozofů se Non-Extractive Architecture: 1 zkoumá, zda je možné alternativní paradigma v navrhování a na jakých hodnotách by mohlo být založeno.

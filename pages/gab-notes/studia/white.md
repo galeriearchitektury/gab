@@ -1,0 +1,2 @@
+- https://whitearkitekter.com/
+- White Arkitekter je jednou z předních skandinávských architektonických kanceláří. Pracujeme v mezinárodním kontextu a naším posláním je umožnit udržitelný život prostřednictvím umění architektury. Naší vizí je, aby veškerá naše architektura byla do roku 2030 klimaticky neutrální díky dokonalému designu.

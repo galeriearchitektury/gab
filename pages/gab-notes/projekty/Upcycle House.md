@@ -1,0 +1,3 @@
+- https://lendager.com/project/upcycle-house/
+- Co kdybyste si mohli postavit rodinný dům z přepravních kontejnerů, zátek od šampaňského a plechovek od limonády? Co kdybyste při tom ušetřili 86 % CO2? Dům Upcycle House i 10 let po dokončení nastavuje laťku s pouhými 0,7 kgco2/m2.
+- postaveno [[Lendager]]
