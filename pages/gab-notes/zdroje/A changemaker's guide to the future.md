@@ -1,0 +1,9 @@
+- Ditte Lysgaard
+- https://lendager.com/project/a-changemakers-guide/
+- _Představte si svět bez nedostatku zdrojů. Svět, kde naše spotřeba, výroba a budovy nemají žádný negativní dopad na naše klima a zdraví. Kde neexistuje plýtvání a kde se hospodářský růst a udržitelnost vzájemně podmiňují - nikoliv jsou v protikladu._
+- Publikace vycházející z konceptu cirkulární ekonomiky. 
+- [Ejner Pedersen](https://www.wallpaper.com/design/remembering-master-craftsman-ejnar-pedersen), jeden z pionýrů skandinávského užitého designu z poválečné éry pronesl: 
+	- "I usually say we make free furniture. If you give so much money for a chair today, then in many years — when you’re done using it — you will be able to sell it for the same."
+	- "Běžně říkám, že vyrábíme nábytek zdarma. Pokud dnes za nějakou židli utratíte určitou sumu peněz - v momentě, kdy už ji nechcete dál používat - ji budete schopni prodat za alespoň tutéž sumu peněz."
+- "Je nezbytné, aby designeři začali přebírat odpovědnost nejen za realizaci svých návrhů, ale také za to, že se jim skutečně podaří, aby tyto návrhy byly krásné, funkční, cenově dostupné a ekologicky relevantní pro budoucnost."
+- "Na naše planetární hranice pohlížíme jako na pozitivní tvůrčí omezení. Nevnímáme je jako břemeno nebo výmluvu pro kompromisy v kvalitách a hodnotách, ale jako příležitost dosáhnout hvězd a udělat naše návrhy ještě lepší."

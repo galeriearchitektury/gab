@@ -12,8 +12,8 @@ module.exports = function (eleventyConfig) {
     };
     let markdownLib = markdownIt(options).use(markdownItAttrs);
     eleventyConfig.setLibrary('md', markdownLib);
-    const pluginPWA = require('eleventy-plugin-pwa');
-    eleventyConfig.addPlugin(pluginPWA);
+    // const pluginPWA = require('eleventy-plugin-pwa');
+    // eleventyConfig.addPlugin(pluginPWA);
     return {
         templateFormats: [
             'md',

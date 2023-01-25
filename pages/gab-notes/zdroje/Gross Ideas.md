@@ -1,0 +1,3 @@
+- Gross Ideas: Tales of Tomorrow's Architecture
+- https://shop.architecturefoundation.org.uk/products/gross-ideas-tales-of-tomorrows-architecture
+- Tato kniha originálních povídek, jejichž autory jsou architekti, inženýři a spisovatelé, se zabývá architekturou blízké budoucnosti nahlíženou optikou fiktivních postav, míst a budov. Jaká bude architektura budoucnosti? Jak se města změní s rozpadem životního prostředí? Jak budou lidé cestovat, až se auta stanou dávnou historií? Jak budou vypadat budovy, až cihly a malta přestanou být nástrojem finanční akumulace?

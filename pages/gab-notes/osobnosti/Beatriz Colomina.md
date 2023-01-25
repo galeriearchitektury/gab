@@ -1,0 +1,1 @@
+- historička architektury, teoretička a kurátorka. Je zakládající ředitelkou Programu médií a modernity na Princetonské univerzitě, profesorkou dějin architektury Howarda Crosbyho Butlera a ředitelkou postgraduálního studia na School of Architecture.

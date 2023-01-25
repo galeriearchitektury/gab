@@ -1,0 +1,3 @@
+- https://lendager.com/
+- "Dnes s respektem přijímáme výzvy zítřka, protože věříme v budoucnost."
+- Realizujeme udržitelnou architekturu a spojujeme sílu přírody, vědy a estetiky, abychom realizovali nákladově efektivní a budoucí řešení."

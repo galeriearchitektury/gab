@@ -1,0 +1,2 @@
+- https://www.stephcarlisle.com/
+- Ekologické problémy jsou těžké a trnité. Zajímám se o skutečný život, o problémy, které se nevejdou do jednoho oboru, o složité systémy, které nelze pochopit jen na základě jednoho pohledu. Proto se moje práce pohybuje na pomezí praxe, výzkumu a teorie. Opírá se o vědecký výzkum, představivost a značnou dávku spekulací.  Zcela se opírá o hlubokou spolupráci a týmovou práci.
