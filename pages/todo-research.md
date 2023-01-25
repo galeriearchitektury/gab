@@ -1,9 +1,4 @@
 -   mies van der rohe award
--   era21
--   strelka press
--   sternberg press
--   Belt and Road Initiative
--   KlarePel
 -   Volume magazine from Amsterdam https://en.wikipedia.org/wiki/Volume_Magazine
 -   arch daily
 -   dezeen
