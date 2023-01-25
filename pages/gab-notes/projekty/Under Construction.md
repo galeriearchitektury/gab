@@ -1,0 +1,3 @@
+- https://norellrodhe.se/under-construction
+- Projekt _Under Construction_ představujeme město, které je neustále přestavováno za použití stejných zásob materiálů. Projekt vystavený na Trienále architektury v Oslu 2019 na téma The Architecture of Degrowth má podobu velkého modelu postaveného z materiálů nalezených na zbořeništích ve Stockholmu.
+- Pridat nejakou jejich fotku?

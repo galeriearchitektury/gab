@@ -1,1 +1,3 @@
 - https://vandkunsten.com/en/approach
+- https://futurearchitectureplatform.org/projects/da246c3d-208b-46f8-b096-ca82766e44a4/
+- https://space10.com/beyond-the-blueprint-shared-living-and-the-importance-of-architecture-and-design/
