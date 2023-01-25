@@ -10,7 +10,22 @@ module.exports = function (eleventyConfig) {
         breaks: true,
         linkify: true,
     };
-    let markdownLib = markdownIt(options).use(markdownItAttrs);
+    let markdownLib = markdownIt(options)
+        .use(markdownItAttrs)
+        // TODO modify so that I can link between notes and make it
+        // a obsidian / eleventy plugin
+        .use(function (md) {
+            // Recognize Mediawiki links ([[text]])
+            md.linkify.add('[[', {
+                validate: /^\s?([^\[\]\|\n\r]+)(\|[^\[\]\|\n\r]+)?\s?\]\]/,
+                normalize: (match) => {
+                    const parts = match.raw.slice(2, -2).split('|');
+                    parts[0] = parts[0].replace(/.(md|markdown)\s?$/i, '');
+                    match.text = (parts[1] || parts[0]).trim();
+                    match.url = `/notes/${parts[0].trim()}/`;
+                },
+            });
+        });
     eleventyConfig.setLibrary('md', markdownLib);
     // const pluginPWA = require('eleventy-plugin-pwa');
     // eleventyConfig.addPlugin(pluginPWA);
