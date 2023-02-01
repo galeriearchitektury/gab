@@ -22,12 +22,24 @@
         <button id="grabFrameButton" disabled>Grab Frame</button>
     </div>
     <div>
+        <input type="range" max="255" value="32">
+        <input type="range" max="255" value="32">
+        <input type="range" max="255" value="32">
+    </div>
+    <div>
         <canvas id="output-canvas" width="640" height="480"></canvas>
     </div>
     <img src="" width="640" height="480" />
 </div>
 
 <script>
+    let rColor = 128;
+    let gColor = 128;
+    let bColor = 128;
+    let rRange = 32;
+    let gRange = 32;
+    let bRange = 32;
+
     var imageCapture;
 
     function onGetUserMediaButtonClick() {

@@ -1,60 +1,104 @@
 body {
+  /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  /* height: 100vh; */
+  overflow: hidden;
+  /* background-color: green; */
+    height: 100%;
+    font-size: 16px;
+    font-family: sans-serif;
+    line-height: 1.25;
+}
+
+p {
+    max-width: 75ch;
+    margin-bottom: .5rem;
+}
+
+html {
+    height:100%;
+            box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+#content {
+    margin-top: 2rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    margin-left: 2rem;
+}
+
+#wrapper {
     height: 100vh;
-    overflow: hidden;
-    background-color: green;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+footer {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
 
 #here,
 #soon {
-    width: 50vmin;
-    height: 50vmin;
-    border: 5px dotted white;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50vmin;
-    font-family: sans-serif;
-    position: absolute;
+  width: 50vmin;
+  height: 50vmin;
+  border: 5px dotted white;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50vmin;
+  font-family: sans-serif;
+  position: absolute;
 }
 
 #here {
-    animation: rotationHere 20s infinite ease;
-    padding-top: -10rem;
+  animation: rotationHere 20s infinite ease;
+  padding-top: -10rem;
 }
 
 #soon {
-    animation: rotationSoon 20s infinite ease ;
-    padding-top: 10rem;
+  animation: rotationSoon 20s infinite ease;
+  padding-top: 10rem;
 }
 
 @keyframes rotationHere {
-    0% {
-        transform: rotate3d(0, -1, -1, 360deg);
-        border-style: dashed;
-    }
-    50% {
-        border-style: dotted;
-    }
-    100% {
-        transform: rotate3d(0, -1, -1, -360deg);
-        border-style: dashed;
-    }
+  0% {
+    transform: rotate3d(0, -1, -1, 360deg);
+    border-style: dashed;
+  }
+  50% {
+    border-style: dotted;
+  }
+  100% {
+    transform: rotate3d(0, -1, -1, -360deg);
+    border-style: dashed;
+  }
 }
 
 @keyframes rotationSoon {
-    0% {
-        transform: rotate3d(-1, -1, 0, -360deg);
-        border-style: dashed;
-    }
-    50% {
-        border-style: dotted;
-    }
-    100% {
-        transform: rotate3d(-1, -1, 0, 360deg);
-        border-style: dashed;
-    }
+  0% {
+    transform: rotate3d(-1, -1, 0, -360deg);
+    border-style: dashed;
+  }
+  50% {
+    border-style: dotted;
+  }
+  100% {
+    transform: rotate3d(-1, -1, 0, 360deg);
+    border-style: dashed;
+  }
 }

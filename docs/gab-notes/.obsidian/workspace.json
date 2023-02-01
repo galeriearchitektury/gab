@@ -4,16 +4,64 @@
     "type": "split",
     "children": [
       {
-        "id": "0b8d862b984a004b",
+        "id": "8499333435e0af92",
         "type": "tabs",
         "children": [
           {
-            "id": "c198ed5292bbe37f",
+            "id": "8ec9b19edfeff90c",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "rešerše/rešerše-blok-1.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "d20a4239244530f4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "instituce/Columbia-GSAPP.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "22a7e731806fd60c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projekty/Tally.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "3302fc4b5da0bbb7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "zdroje/Future Architecture Book.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "2ebb23467953a03a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projekty/Future Architecture.md",
                 "mode": "source",
                 "source": false
               }
@@ -48,7 +96,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "volume ma",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -65,8 +113,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -147,17 +194,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "791f645e3a73a15f",
+  "active": "8ec9b19edfeff90c",
   "lastOpenFiles": [
-    "rešerše/rešerše-blok-2.md",
-    "zdroje/Regenerative by Design.md",
+    "instituce/Columbia-GSAPP.md",
     "rešerše/rešerše-blok-1.md",
-    "zdroje/What constitutes good design?.md",
-    "osobnosti/Nancy Douyon.md",
-    "rešerše/rešerše-blok-3.md",
-    "zdroje/Future Architecture Book.md",
-    "projekty/Future Architecture.md",
+    "osobnosti/Stephanie Carlisle.md",
+    "studia/white.md",
+    "studia/Lendager.md",
+    "studia/3XN.md",
+    "zdroje/Regenerative by Design.md",
+    "články/Léta jsem znečišťovala planetu. Nejsem těžařka - jsem architektka.md",
     "projekty/Under Construction.md",
-    "zdroje/Building a Circular Future.md"
+    "osobnosti/Keller Easterling.md"
   ]
 }
