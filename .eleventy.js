@@ -27,6 +27,7 @@ module.exports = function (eleventyConfig) {
             });
         });
     eleventyConfig.setLibrary('md', markdownLib);
+    eleventyConfig.addPassthroughCopy({ 'img/favicon': '/' });
     // const pluginPWA = require('eleventy-plugin-pwa');
     // eleventyConfig.addPlugin(pluginPWA);
     return {
@@ -39,6 +40,7 @@ module.exports = function (eleventyConfig) {
             'ico',
             'json',
             'html',
+            'ico',
             'patt',
             'css', // css is not yet a recognized template extension in Eleventy
         ],

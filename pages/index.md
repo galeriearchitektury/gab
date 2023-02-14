@@ -6,7 +6,7 @@ layout: layout.njk
 # Architecture is here {#here}
 
 # Soon {#soon} -->
-
+<!-- 
 ## Galerie Architektury Brno zve na výstavu
 
 # Eurotopia: Evropský stoh reprezenatcí
@@ -21,4 +21,4 @@ Druhá část volně na práci navazuje a umožňuje se návštěvníkům na mom
 
 Ve třetí části Maximilian Steverding hlouběji rozebírá svou práci a návštěvníci se tak mohou intenzivněji seznámit s jejími výsledky. Zvolili jsme formu komentované prezentace, kde autor popisuje vlastními slovy hlavní motivace a výsledky svého bádání.
 
-Autora jsme rovněž pozvali do Brna na přednášku a následující workshop. V rámci přednášky bychom rádi představili jeho práci i mimo projekt Eurotopia. Workshop bychom ovšem rádi na téma Eurotopie rádi navázali.
+Autora jsme rovněž pozvali do Brna na přednášku a následující workshop. V rámci přednášky bychom rádi představili jeho práci i mimo projekt Eurotopia. Workshop bychom ovšem rádi na téma Eurotopie rádi navázali. -->
