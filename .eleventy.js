@@ -42,6 +42,7 @@ module.exports = function (eleventyConfig) {
             'html',
             'ico',
             'patt',
+            'otf',
             'css', // css is not yet a recognized template extension in Eleventy
         ],
         dir: {
