@@ -74,6 +74,8 @@ const createNewCanvas = () => {
 const runGreenScreen = () => {
     clientWidth = window.innerWidth;
     clientHeight = window.innerHeight;
+    // clientWidth = 480;
+    // clientHeight = 600;
     video = document.querySelector('video');
     createNewCanvas();
     initControls();
@@ -180,13 +182,9 @@ const runGreenScreen = () => {
 
             const width = clientWidth;
             const height = clientHeight;
-            // const dataLength = width * height * 4;
 
             const x = Math.floor(i % width);
-            // console.log(x)
-            // const y = Math.floor(dataLength / i / );
             const y = Math.floor(i / width);
-            // debugger
 
             if (
                 hasRequiredColor(r, g, b) &&
@@ -198,7 +196,7 @@ const runGreenScreen = () => {
             }
         }
         ctx1.putImageData(frame, 0, 0);
-        setTimeout(computeFrame, 0);
+        setTimeout(computeFrame, 20);
     }
 
     const isWithinBackgroundRectangle = (x, y) => {
