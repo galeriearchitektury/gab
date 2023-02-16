@@ -1,4 +1,5 @@
-let rColor, gColor, bColor, rRange, gRange, bRange;
+let rColor, gColor, bColor, rRange, gRange, bRange, video;
+let video2, c1, ctx1, c_tmp, ctx_tmp, img_gal, imgCanvas, img_data;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -34,6 +35,8 @@ const logSettings = () => {
 };
 
 runGreenScreen = () => {
+    video = document.querySelector('video');
+    init();
     const rColorInput = document.querySelector('#r-color');
     const gColorInput = document.querySelector('#g-color');
     const bColorInput = document.querySelector('#b-color');
@@ -127,16 +130,11 @@ runGreenScreen = () => {
     //     .addEventListener('click', onGrabFrameButtonClick);
 
     document.addEventListener('DOMContentLoaded', () => {
-        init();
         video.addEventListener('play', function () {
             document.querySelector('#grabFrameButton').disabled = false;
         });
         video.addEventListener('play', computeFrame);
     });
-
-    let video = document.querySelector('video');
-
-    let video2, c1, ctx1, c_tmp, ctx_tmp, img_gal, imgCanvas, img_data;
 
     c1 = document.getElementById('output-canvas');
     ctx1 = c1.getContext('2d');
