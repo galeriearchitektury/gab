@@ -23,3 +23,10 @@ input {
     top: 1rem;
     left: 1rem;
 }
+
+canvas {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}

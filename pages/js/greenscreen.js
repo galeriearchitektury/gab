@@ -1,5 +1,7 @@
 let rColor, gColor, bColor, rRange, gRange, bRange, video;
-let video2, c1, ctx1, c_tmp, ctx_tmp, img_gal, imgCanvas, img_data;
+let c1, ctx1, c_tmp, ctx_tmp, img_gal, imgCanvas, img_data;
+let clientWidth = window.innerWidth,
+    clientHeight = window.innerHeight;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -34,9 +36,7 @@ const logSettings = () => {
     console.log(rRange, gRange, bRange);
 };
 
-runGreenScreen = () => {
-    video = document.querySelector('video');
-    init();
+const initControls = () => {
     const rColorInput = document.querySelector('#r-color');
     const gColorInput = document.querySelector('#g-color');
     const bColorInput = document.querySelector('#b-color');
@@ -59,6 +59,24 @@ runGreenScreen = () => {
     rRangeInput.addEventListener('change', (e) => rangeChange(e, 'r'));
     gRangeInput.addEventListener('change', (e) => rangeChange(e, 'g'));
     bRangeInput.addEventListener('change', (e) => rangeChange(e, 'b'));
+};
+
+const createNewCanvas = () => {
+    const outputCanvas = document.createElement('canvas');
+    outputCanvas.id = 'output-canvas';
+    const holder = document.getElementById('canvas-holder');
+    outputCanvas.width = clientWidth;
+    outputCanvas.height = clientHeight;
+    outputCanvas.style.width = `${clientWidth}px`;
+    outputCanvas.style.height = `${clientHeight}px`;
+    holder.appendChild(outputCanvas);
+};
+
+const runGreenScreen = () => {
+    video = document.querySelector('video');
+    createNewCanvas();
+    initControls();
+    init();
 
     logSettings();
 
@@ -125,16 +143,14 @@ runGreenScreen = () => {
     document
         .querySelector('#getUserMediaButton')
         .addEventListener('click', onGetUserMediaButtonClick);
-    // document
-    //     .querySelector('#grabFrameButton')
-    //     .addEventListener('click', onGrabFrameButtonClick);
+    document
+        .querySelector('#grabFrameButton')
+        .addEventListener('click', onGrabFrameButtonClick);
 
-    document.addEventListener('DOMContentLoaded', () => {
-        video.addEventListener('play', function () {
-            document.querySelector('#grabFrameButton').disabled = false;
-        });
-        video.addEventListener('play', computeFrame);
+    video.addEventListener('play', function () {
+        document.querySelector('#grabFrameButton').disabled = false;
     });
+    video.addEventListener('play', computeFrame);
 
     c1 = document.getElementById('output-canvas');
     ctx1 = c1.getContext('2d');
@@ -153,29 +169,16 @@ runGreenScreen = () => {
         if (video.paused || video.ended) {
             return;
         }
-        ctx_tmp.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        let frame = ctx_tmp.getImageData(
-            0,
-            0,
-            video.videoWidth,
-            video.videoHeight
-        );
-
-        // ctx_tmp.drawImage(video2, 0, 0, video2.videoWidth, video2.videoHeight);
-        // let frame2 = ctx_tmp.getImageData(
-        //     0,
-        //     0,
-        //     video2.videoWidth,
-        //     video2.videoHeight
-        // );
+        ctx_tmp.drawImage(video, 0, 0, clientWidth, clientHeight);
+        let frame = ctx_tmp.getImageData(0, 0, clientWidth, clientHeight);
 
         for (let i = 0; i < frame.data.length / 4; i++) {
             let r = frame.data[i * 4 + 0];
             let g = frame.data[i * 4 + 1];
             let b = frame.data[i * 4 + 2];
 
-            const width = 640;
-            const height = 480;
+            const width = clientWidth;
+            const height = clientHeight;
             // const dataLength = width * height * 4;
 
             const x = Math.floor(i % width);
@@ -229,25 +232,20 @@ runGreenScreen = () => {
     function init() {
         video = document.getElementById('video');
 
-        video2 = document.createElement('video');
-        video2.src = '../kombucha-compressed.mp4';
-        video2.muted = true;
-        video2.autoplay = true;
-
         c1 = document.getElementById('output-canvas');
         ctx1 = c1.getContext('2d');
 
         c_tmp = document.createElement('canvas');
-        c_tmp.setAttribute('width', 640);
-        c_tmp.setAttribute('height', 480);
+        c_tmp.setAttribute('width', clientWidth);
+        c_tmp.setAttribute('height', clientHeight);
         ctx_tmp = c_tmp.getContext('2d');
 
         const image = new Image();
         image.src = '../img/here-soon.png';
         image.onload = () => {
             imgCanvas = document.createElement('canvas');
-            imgCanvas.width = 640;
-            imgCanvas.height = 480;
+            imgCanvas.width = clientWidth;
+            imgCanvas.height = clientHeight;
 
             var context = imgCanvas.getContext('2d');
             context.drawImage(image, 0, 0);

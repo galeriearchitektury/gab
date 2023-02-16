@@ -20,12 +20,9 @@
         ></video>
     </div>
 
-    <!-- 
-    // default rgb(185,91,44) -->
-
     <div>
         <div id="controls">
-            <!-- <button id="grabFrameButton" disabled>Snap a picture</button> -->
+            <button id="grabFrameButton" disabled>Snap a picture</button>
             <button id="getUserMediaButton">Start video</button>
 
             <div style="display: flex; flex-direction: row; flex-wrap: wrap">
@@ -36,17 +33,17 @@
                             max="255"
                             value="185"
                             id="r-color"
-/>
+                        />
                         <label for="r-color">Red - </label>
                         <label id="r-value">185</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="91" id="g-color"/>
+                        <input type="range" max="255" value="91" id="g-color" />
                         <label for="g-color">Green - </label>
                         <label id="g-value">91</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="44" id="b-color"/>
+                        <input type="range" max="255" value="44" id="b-color" />
                         <label for="b-color">Blue - </label>
                         <label id="b-value">44</label>
                     </div>
@@ -54,17 +51,17 @@
 
                 <div>
                     <div>
-                        <input type="range" max="255" value="30" id="r-range"/>
+                        <input type="range" max="255" value="30" id="r-range" />
                         <label for="r-range">Red range - </label>
                         <label id="r-range-value">30</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="6" id="g-range"/>
+                        <input type="range" max="255" value="6" id="g-range" />
                         <label for="g-color">Green range - </label>
                         <label id="g-range-value">6</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="6" id="b-range"/>
+                        <input type="range" max="255" value="6" id="b-range" />
                         <label for="b-color">Blue range - </label>
                         <label id="b-range-value">6</label>
                     </div>
@@ -73,17 +70,15 @@
         </div>
     </div>
 
-    <div>
-        <canvas id="output-canvas" width="640" height="480"></canvas>
-    </div>
-    <!-- <img src="" width="640" height="480" id=""/> -->
+    <div id="canvas-holder"></div>
+    <img src="" width="640" height="480" id="" />
 </div>
 
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', (event) => {
-        console.log('wtf')
+        console.log('wtf');
         runGreenScreen();
     });
 </script>
 
-<link rel="stylesheet" href="../css/greenscreen.css"/>
+<link rel="stylesheet" href="../css/greenscreen.css" />
