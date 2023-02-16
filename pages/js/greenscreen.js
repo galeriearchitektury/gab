@@ -1,7 +1,6 @@
 let rColor, gColor, bColor, rRange, gRange, bRange, video;
 let c1, ctx1, c_tmp, ctx_tmp, img_gal, imgCanvas, img_data;
-let clientWidth = window.innerWidth,
-    clientHeight = window.innerHeight;
+let clientWidth, clientHeight;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -73,6 +72,8 @@ const createNewCanvas = () => {
 };
 
 const runGreenScreen = () => {
+    clientWidth = window.innerWidth;
+    clientHeight = window.innerHeight;
     video = document.querySelector('video');
     createNewCanvas();
     initControls();
