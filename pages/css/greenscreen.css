@@ -1,5 +1,8 @@
 body {
     /* background-color: pink; */
+    width: 100vh;
+    height: 100vw;
+    overflow: hidden;
 }
 
 button {
@@ -8,6 +11,15 @@ button {
 }
 
 input {
-    width: 20rem;
+    width: 12rem;
     height: 2rem;
+}
+
+#controls {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
 }

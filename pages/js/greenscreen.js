@@ -122,9 +122,9 @@ runGreenScreen = () => {
     document
         .querySelector('#getUserMediaButton')
         .addEventListener('click', onGetUserMediaButtonClick);
-    document
-        .querySelector('#grabFrameButton')
-        .addEventListener('click', onGrabFrameButtonClick);
+    // document
+    //     .querySelector('#grabFrameButton')
+    //     .addEventListener('click', onGrabFrameButtonClick);
 
     document.addEventListener('DOMContentLoaded', () => {
         init();
