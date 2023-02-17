@@ -3,11 +3,18 @@
 // https://developer.chrome.com/blog/offscreen-canvas/
 // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia
 // https://stackoverflow.com/questions/21197707/html5-video-to-canvas-playing-very-slow
+// https://www.mux.com/blog/canvas-adding-filters-and-more-to-video-using-just-a-browser
 
 let rColor, gColor, bColor, rRange, gRange, bRange;
 let img_gal, imgCanvas, img_data;
 let clientWidth, clientHeight;
-let outputCanvas, outputContext, video, imageCapture, tmpCanvas, tmpContext;
+let outputCanvas,
+    outputContext,
+    video,
+    imageCapture,
+    tmpCanvas,
+    tmpContext,
+    fullscreen = false;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -66,11 +73,28 @@ const initControls = () => {
     gRangeInput.addEventListener('change', (e) => rangeChange(e, 'g'));
     bRangeInput.addEventListener('change', (e) => rangeChange(e, 'b'));
 
+    document.getElementById('width').innerText = clientWidth;
+    document.getElementById('height').innerText = clientHeight;
+
+    document.getElementById('fullscreen').addEventListener('click', () => {
+        const elem = document.documentElement;
+        if (!fullscreen) {
+            elem.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+        fullscreen = !fullscreen;
+    });
+
     video = document.querySelector('video');
-    createNewCanvases();
+    video.width = clientWidth;
+    video.height = clientHeight;
+    createNewCanvas();
+    outputCanvas.width = clientWidth;
+    outputCanvas.height = clientHeight;
 };
 
-const createNewCanvases = () => {
+const createNewCanvas = () => {
     outputCanvas = document.createElement('canvas');
     outputCanvas.id = 'output-canvas';
     const holder = document.getElementById('canvas-holder');
@@ -79,7 +103,10 @@ const createNewCanvases = () => {
     outputCanvas.style.width = `${clientWidth}px`;
     outputCanvas.style.height = `${clientHeight}px`;
     holder.appendChild(outputCanvas);
+    outputContext = outputCanvas.getContext('2d');
+};
 
+const createTmpCanvas = () => {
     tmpCanvas = document.createElement('canvas');
 };
 
@@ -96,6 +123,11 @@ const onGetUserMediaButtonClick = () => {
             },
         })
         .then((mediaStream) => {
+            console.log('hiiir');
+            // let { width, height } = mediaStream.getTracks()[0].getSettings();
+            // console.log(width, height)
+            // document.getElementById('videowidth').innerText = width;
+            // document.getElementById('videoheight').innerText = height;
             document.querySelector('video').srcObject = mediaStream;
             // const track = mediaStream.getVideoTracks()[0];
             // imageCapture = new ImageCapture(track);
@@ -214,19 +246,140 @@ const initEvents = () => {
     });
     // video.play()
     video.addEventListener('play', computeFrame);
-
-    outputContext = outputCanvas.getContext('2d');
 };
 
 const variantA = () => {
     initControls();
+    createTmpCanvas();
     init();
     logSettings();
     initEvents();
 };
 
+const variantB = () => {
+    initControls();
+    createTmpCanvas();
+    tmpCanvas.setAttribute('width', clientWidth);
+    tmpCanvas.setAttribute('height', clientHeight);
+    tmpContext = tmpCanvas.getContext('2d');
+
+    video.width = clientWidth;
+    video.height = clientHeight;
+
+    const constraints = {
+        audio: false,
+        video: {
+            facingMode: 'environment',
+            frameRate: {
+                ideal: 30,
+                max: 30,
+            },
+            width: 1920
+        },
+    };
+
+    // const drawOnTop = (stream) => {
+    //     // let frame = stream.getImageData(0, 0, clientWidth, clientHeight);
+    //     // console.log(frame)
+    //     // const track = stream.getVideoTracks()[0]
+    //     // console.log(track)
+    //     outputContext.drawImage(video, clientWidth, clientHeight);
+    //     // const pic = outputContext.getImageData();
+    // };
+
+    // function handleSuccess(stream) {
+    //     video.srcObject = stream;
+    //     video.addEventListener('play', () => drawOnTop(stream));
+    //     // video.play()
+    // }
+
+    function handleError(error) {
+        console.log(
+            'navigator.MediaDevices.getUserMedia error: ',
+            error.message,
+            error.name
+        );
+    }
+
+    // video, outputCanvas, outputContext
+
+    function handleSuccess(stream) {
+        video.srcObject = stream;
+
+        console.log('hiiir');
+        let { width, height } = stream.getTracks()[0].getSettings();
+        console.log(width, height);
+        document.getElementById('videowidth').innerText = width;
+        document.getElementById('videoheight').innerText = height;
+
+        const updateCanvas = () => {
+            console.log('updating');
+            // outputContext.drawImage(video, 100, 100, clientWidth, clientHeight);
+            tmpContext.drawImage(video, 0, 0, clientWidth, clientHeight);
+            let videoFrame = tmpContext.getImageData(
+                0,
+                0,
+                clientWidth,
+                clientHeight
+            );
+
+            const arr = new Uint8ClampedArray(clientHeight * clientWidth * 4);
+            arr.fill(0, 0, arr.length - 1);
+            const frame = new ImageData(arr, clientWidth);
+
+            // const data = new Uint8ClampedArray(
+            //     clientHeight * clientHeight * 4
+            // );
+            // const frame = new ImageData(data, clientWidth, clientHeight);
+
+            for (let i = 0; i < videoFrame.data.length / 4; i++) {
+                let r = videoFrame.data[i * 4 + 0];
+                let g = videoFrame.data[i * 4 + 1];
+                let b = videoFrame.data[i * 4 + 2];
+
+                const width = clientHeight;
+                const height = clientWidth;
+
+                const x = Math.floor(i % width);
+                const y = Math.floor(i / width);
+
+                if (
+                    hasRequiredColor(r, g, b) &&
+                    isWithinBackgroundRectangle(x, y)
+                ) {
+                    frame.data[i * 4 + 0] = 32;
+                    frame.data[i * 4 + 1] = 32;
+                    frame.data[i * 4 + 2] = 192;
+                    frame.data[i * 4 + 3] = 255;
+                }
+            }
+            // console.log(frame[3333])
+            outputContext.putImageData(frame, 0, 0);
+            requestAnimationFrame(updateCanvas);
+        };
+
+        video.addEventListener(
+            'play',
+            () => {
+                requestAnimationFrame(updateCanvas);
+            },
+            false
+        );
+
+        video.play();
+    }
+
+    navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(handleSuccess)
+        .catch(handleError);
+
+    console.log('yo');
+};
+
 const runGreenScreen = () => {
     clientWidth = window.innerWidth;
     clientHeight = window.innerHeight;
-    variantA()
+    // variantA()
+    variantB();
 };

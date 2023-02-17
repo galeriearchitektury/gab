@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     /* background-color: pink; */
     width: 100vh;
@@ -24,9 +29,42 @@ input {
     left: 1rem;
 }
 
+video,
 canvas {
     position: absolute;
-    z-index: -1;
     top: 0;
     left: 0;
+    /* width: 100vw;
+    height: 100vh; */
+    border: 1px solid red;
+    object-fit: cover;
+}
+
+video {
+    /* display: none; */
+    /* object-fit: contain; */
+    /* width: 1648px;  */
+    /* height: 3168px; */
+    /* object-fit: fill; */
+    /* display: none; */
+}
+
+canvas {
+    z-index: 2;
+    /* background: transparent; */
+    /* opacity: 50%; */
+}
+
+img {
+    z-index: 300;
+    position: absolute;
+}
+
+input, label {
+    z-index: 600;
+    position: relative;
+}
+
+button {
+    z-index: 500;
 }

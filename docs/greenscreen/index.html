@@ -6,24 +6,22 @@
     in the form of a Blob with <code>takePhoto()</code> or as a ImageBitmap with
     <code>grabFrame()</code>.
 </p> -->
-
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script src="../js/greenscreen.js" type="text/javascript"></script>
 
+<video playsinline autoplay id="video"></video>
 <div id="results">
-    <div>
-        <video
-            autoplay
-            width="0"
-            height="0"
-            id="video"
-            style="display: none"
-        ></video>
-    </div>
+    <div></div>
 
     <div>
         <div id="controls">
+            <span id="width"></span>
+            <span id="height"></span>
+            <span id="videowidth"></span>
+            <span id="videoheight"></span>
             <button id="grabFrameButton" disabled>Snap a picture</button>
             <button id="getUserMediaButton">Start video</button>
+            <button id="fullscreen">Fullscreen</button>
 
             <div style="display: flex; flex-direction: row; flex-wrap: wrap">
                 <div>
@@ -31,39 +29,44 @@
                         <input
                             type="range"
                             max="255"
-                            value="161"
+                            value="187"
                             id="r-color"
                         />
                         <label for="r-color">Red - </label>
-                        <label id="r-value">161</label>
+                        <label id="r-value">187</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="75" id="g-color" />
+                        <input
+                            type="range"
+                            max="255"
+                            value="109"
+                            id="g-color"
+                        />
                         <label for="g-color">Green - </label>
-                        <label id="g-value">75</label>
+                        <label id="g-value">109</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="5" id="b-color" />
+                        <input type="range" max="255" value="62" id="b-color" />
                         <label for="b-color">Blue - </label>
-                        <label id="b-value">5</label>
+                        <label id="b-value">62</label>
                     </div>
                 </div>
 
                 <div>
                     <div>
-                        <input type="range" max="255" value="50" id="r-range" />
+                        <input type="range" max="255" value="56" id="r-range" />
                         <label for="r-range">Red range - </label>
-                        <label id="r-range-value">50</label>
+                        <label id="r-range-value">56</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="25" id="g-range" />
+                        <input type="range" max="255" value="50" id="g-range" />
                         <label for="g-color">Green range - </label>
-                        <label id="g-range-value">25</label>
+                        <label id="g-range-value">50</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="62" id="b-range" />
+                        <input type="range" max="255" value="41" id="b-range" />
                         <label for="b-color">Blue range - </label>
-                        <label id="b-range-value">61</label>
+                        <label id="b-range-value">41</label>
                     </div>
                 </div>
             </div>
