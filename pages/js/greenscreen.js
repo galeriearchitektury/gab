@@ -83,74 +83,123 @@ const createNewCanvases = () => {
     tmpCanvas = document.createElement('canvas');
 };
 
-const runGreenScreen = () => {
-    clientWidth = window.innerWidth;
-    clientHeight = window.innerHeight;
-    initControls();
-    init();
-    logSettings();
-
-    function onGetUserMediaButtonClick() {
-        navigator.mediaDevices
-            .getUserMedia({
-                audio: false,
-                video: {
-                    facingMode: 'environment',
-                    frameRate: {
-                        ideal: 20,
-                        max: 30,
-                    },
+const onGetUserMediaButtonClick = () => {
+    navigator.mediaDevices
+        .getUserMedia({
+            audio: false,
+            video: {
+                facingMode: 'environment',
+                frameRate: {
+                    ideal: 20,
+                    max: 30,
                 },
-            })
-            .then((mediaStream) => {
-                document.querySelector('video').srcObject = mediaStream;
+            },
+        })
+        .then((mediaStream) => {
+            document.querySelector('video').srcObject = mediaStream;
+            // const track = mediaStream.getVideoTracks()[0];
+            // imageCapture = new ImageCapture(track);
+        })
+        .catch((error) => ChromeSamples.log(error));
+};
 
-                const track = mediaStream.getVideoTracks()[0];
-                imageCapture = new ImageCapture(track);
-            })
-            .catch((error) => ChromeSamples.log(error));
+const topLeftX = 303;
+const topLeftY = 15;
+const topRightX = 458;
+const topRightY = 20;
+
+const bottomLeftX = 297;
+const bottomLeftY = 223;
+const bottomRightX = 440;
+const bottomRightY = 234;
+
+const isWithinBackgroundRectangle = (x, y) => {
+    return true;
+    // return (
+    //     x > Math.min(topLeftX, bottomLeftX) &&
+    //     x < Math.max(topRightX, bottomRightX) &&
+    //     y > Math.min(topLeftY, topRightY) &&
+    //     y < Math.max(bottomLeftY, bottomRightY)
+    // );
+};
+
+// rgb(120,80,59)
+// rgb(105,66,49)
+// rgb(98,51,30)
+// rgb(90,48,38)
+// rgb(113,66,37)
+
+const hasRequiredColor = (r, g, b) =>
+    //  rgb(189, 93, 44);
+    // rgb(185,91,44)
+    // r > 120 && r < 220 && g > 70 && g < 110 && b > 40 && b < 60;
+    // r > 80 && r < 180 && g > 42 && g < 95 && b > 10 && b < 70;
+    r > rColor - rRange &&
+    r < rColor + rRange &&
+    g > gColor - gRange &&
+    g < gColor + gRange &&
+    b > bColor - bRange &&
+    b < bColor + bRange;
+// false;
+
+const computeFrame = () => {
+    if (video.paused || video.ended) {
+        return;
     }
+    tmpContext.drawImage(video, 0, 0, clientWidth, clientHeight);
+    let frame = tmpContext.getImageData(0, 0, clientWidth, clientHeight);
 
-    function onGrabFrameButtonClick() {
-        var myImageData = outputCanvas.toDataURL();
-        console.log(myImageData);
-        document.querySelector('img').src = myImageData;
+    for (let i = 0; i < frame.data.length / 4; i++) {
+        let r = frame.data[i * 4 + 0];
+        let g = frame.data[i * 4 + 1];
+        let b = frame.data[i * 4 + 2];
+
+        const width = clientWidth;
+        const height = clientHeight;
+
+        const x = Math.floor(i % width);
+        const y = Math.floor(i / width);
+
+        if (hasRequiredColor(r, g, b) && isWithinBackgroundRectangle(x, y)) {
+            frame.data[i * 4 + 0] = 32;
+            frame.data[i * 4 + 1] = 32;
+            frame.data[i * 4 + 2] = 192;
+        }
     }
+    outputContext.putImageData(frame, 0, 0);
+    requestAnimationFrame(computeFrame);
+};
 
-    function onTakePhotoButtonClick() {
-        imageCapture
-            .takePhoto()
-            .then((blob) => createImageBitmap(blob))
-            .then((imageBitmap) => {
-                const canvas = document.querySelector('#takePhotoCanvas');
-                drawCanvas(canvas, imageBitmap);
-            })
-            .catch((error) => ChromeSamples.log(error));
-    }
+const init = () => {
+    video = document.getElementById('video');
+    outputContext = outputCanvas.getContext('2d');
+    tmpCanvas.setAttribute('width', clientWidth);
+    tmpCanvas.setAttribute('height', clientHeight);
+    tmpContext = tmpCanvas.getContext('2d');
 
-    function drawCanvas(canvas, img) {
-        canvas.width = getComputedStyle(canvas).width.split('px')[0];
-        canvas.height = getComputedStyle(canvas).height.split('px')[0];
-        let ratio = Math.min(
-            canvas.width / img.width,
-            canvas.height / img.height
+    const image = new Image();
+    image.src = '../img/here-soon.png';
+    image.onload = () => {
+        imgCanvas = document.createElement('canvas');
+        imgCanvas.width = clientWidth;
+        imgCanvas.height = clientHeight;
+
+        var context = imgCanvas.getContext('2d');
+        context.drawImage(image, 0, 0);
+
+        img_data = context.getImageData(
+            0,
+            0,
+            imgCanvas.width,
+            imgCanvas.height
         );
-        let x = (canvas.width - img.width * ratio) / 2;
-        let y = (canvas.height - img.height * ratio) / 2;
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-        canvas
-            .getContext('2d')
-            .drawImage(
-                img,
-                0,
-                0,
-                img.width,
-                img.height,
-                x,
-                y,
-                img.width * ratio,
-                img.height * ratio
-            );
+    };
+};
+
+const initEvents = () => {
+    function onGrabFrameButtonClick() {
+        const myImageData = outputCanvas.toDataURL();
+        document.querySelector('img').src = myImageData;
     }
 
     document
@@ -163,105 +212,21 @@ const runGreenScreen = () => {
     video.addEventListener('play', function () {
         document.querySelector('#grabFrameButton').disabled = false;
     });
+    // video.play()
     video.addEventListener('play', computeFrame);
 
     outputContext = outputCanvas.getContext('2d');
+};
 
-    const topLeftX = 303;
-    const topLeftY = 15;
-    const topRightX = 458;
-    const topRightY = 20;
+const variantA = () => {
+    initControls();
+    init();
+    logSettings();
+    initEvents();
+};
 
-    const bottomLeftX = 297;
-    const bottomLeftY = 223;
-    const bottomRightX = 440;
-    const bottomRightY = 234;
-
-    function computeFrame() {
-        if (video.paused || video.ended) {
-            return;
-        }
-        tmpContext.drawImage(video, 0, 0, clientWidth, clientHeight);
-        let frame = tmpContext.getImageData(0, 0, clientWidth, clientHeight);
-
-        for (let i = 0; i < frame.data.length / 4; i++) {
-            let r = frame.data[i * 4 + 0];
-            let g = frame.data[i * 4 + 1];
-            let b = frame.data[i * 4 + 2];
-
-            const width = clientWidth;
-            const height = clientHeight;
-
-            const x = Math.floor(i % width);
-            const y = Math.floor(i / width);
-
-            if (
-                hasRequiredColor(r, g, b) &&
-                isWithinBackgroundRectangle(x, y)
-            ) {
-                frame.data[i * 4 + 0] = 32;
-                frame.data[i * 4 + 1] = 32;
-                frame.data[i * 4 + 2] = 192;
-            }
-        }
-        outputContext.putImageData(frame, 0, 0);
-        requestAnimationFrame(computeFrame);
-    }
-
-    const isWithinBackgroundRectangle = (x, y) => {
-        return true;
-        // return (
-        //     x > Math.min(topLeftX, bottomLeftX) &&
-        //     x < Math.max(topRightX, bottomRightX) &&
-        //     y > Math.min(topLeftY, topRightY) &&
-        //     y < Math.max(bottomLeftY, bottomRightY)
-        // );
-    };
-
-    // rgb(120,80,59)
-    // rgb(105,66,49)
-    // rgb(98,51,30)
-    // rgb(90,48,38)
-    // rgb(113,66,37)
-
-    const hasRequiredColor = (r, g, b) =>
-        //  rgb(189, 93, 44);
-        // rgb(185,91,44)
-        // r > 120 && r < 220 && g > 70 && g < 110 && b > 40 && b < 60;
-        // r > 80 && r < 180 && g > 42 && g < 95 && b > 10 && b < 70;
-        r > rColor - rRange &&
-        r < rColor + rRange &&
-        g > gColor - gRange &&
-        g < gColor + gRange &&
-        b > bColor - bRange &&
-        b < bColor + bRange;
-    // false;
-
-    function init() {
-        video = document.getElementById('video');
-        outputContext = outputCanvas.getContext('2d');
-        tmpCanvas.setAttribute('width', clientWidth);
-        tmpCanvas.setAttribute('height', clientHeight);
-        tmpContext = tmpCanvas.getContext('2d');
-
-        const image = new Image();
-        image.src = '../img/here-soon.png';
-        image.onload = () => {
-            imgCanvas = document.createElement('canvas');
-            imgCanvas.width = clientWidth;
-            imgCanvas.height = clientHeight;
-
-            var context = imgCanvas.getContext('2d');
-            context.drawImage(image, 0, 0);
-
-            img_data = context.getImageData(
-                0,
-                0,
-                imgCanvas.width,
-                imgCanvas.height
-            );
-        };
-
-        // video.addEventListener('play', computeFrame);
-    }
+const runGreenScreen = () => {
+    clientWidth = window.innerWidth;
+    clientHeight = window.innerHeight;
+    variantA()
 };
