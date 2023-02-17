@@ -1,6 +1,13 @@
-let rColor, gColor, bColor, rRange, gRange, bRange, video;
-let c1, ctx1, c_tmp, ctx_tmp, img_gal, imgCanvas, img_data;
+// to check
+// https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
+// https://developer.chrome.com/blog/offscreen-canvas/
+// https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia
+// https://stackoverflow.com/questions/21197707/html5-video-to-canvas-playing-very-slow
+
+let rColor, gColor, bColor, rRange, gRange, bRange;
+let img_gal, imgCanvas, img_data;
 let clientWidth, clientHeight;
+let outputCanvas, outputContext, video, imageCapture, tmpCanvas, tmpContext;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -58,10 +65,13 @@ const initControls = () => {
     rRangeInput.addEventListener('change', (e) => rangeChange(e, 'r'));
     gRangeInput.addEventListener('change', (e) => rangeChange(e, 'g'));
     bRangeInput.addEventListener('change', (e) => rangeChange(e, 'b'));
+
+    video = document.querySelector('video');
+    createNewCanvases();
 };
 
-const createNewCanvas = () => {
-    const outputCanvas = document.createElement('canvas');
+const createNewCanvases = () => {
+    outputCanvas = document.createElement('canvas');
     outputCanvas.id = 'output-canvas';
     const holder = document.getElementById('canvas-holder');
     outputCanvas.width = clientWidth;
@@ -69,27 +79,27 @@ const createNewCanvas = () => {
     outputCanvas.style.width = `${clientWidth}px`;
     outputCanvas.style.height = `${clientHeight}px`;
     holder.appendChild(outputCanvas);
+
+    tmpCanvas = document.createElement('canvas');
 };
 
 const runGreenScreen = () => {
     clientWidth = window.innerWidth;
     clientHeight = window.innerHeight;
-    // clientWidth = 480;
-    // clientHeight = 600;
-    video = document.querySelector('video');
-    createNewCanvas();
     initControls();
     init();
-
     logSettings();
-
-    var imageCapture;
 
     function onGetUserMediaButtonClick() {
         navigator.mediaDevices
             .getUserMedia({
+                audio: false,
                 video: {
                     facingMode: 'environment',
+                    frameRate: {
+                        ideal: 20,
+                        max: 30,
+                    },
                 },
             })
             .then((mediaStream) => {
@@ -102,7 +112,7 @@ const runGreenScreen = () => {
     }
 
     function onGrabFrameButtonClick() {
-        var myImageData = c1.toDataURL();
+        var myImageData = outputCanvas.toDataURL();
         console.log(myImageData);
         document.querySelector('img').src = myImageData;
     }
@@ -155,8 +165,7 @@ const runGreenScreen = () => {
     });
     video.addEventListener('play', computeFrame);
 
-    c1 = document.getElementById('output-canvas');
-    ctx1 = c1.getContext('2d');
+    outputContext = outputCanvas.getContext('2d');
 
     const topLeftX = 303;
     const topLeftY = 15;
@@ -172,8 +181,8 @@ const runGreenScreen = () => {
         if (video.paused || video.ended) {
             return;
         }
-        ctx_tmp.drawImage(video, 0, 0, clientWidth, clientHeight);
-        let frame = ctx_tmp.getImageData(0, 0, clientWidth, clientHeight);
+        tmpContext.drawImage(video, 0, 0, clientWidth, clientHeight);
+        let frame = tmpContext.getImageData(0, 0, clientWidth, clientHeight);
 
         for (let i = 0; i < frame.data.length / 4; i++) {
             let r = frame.data[i * 4 + 0];
@@ -195,8 +204,8 @@ const runGreenScreen = () => {
                 frame.data[i * 4 + 2] = 192;
             }
         }
-        ctx1.putImageData(frame, 0, 0);
-        setTimeout(computeFrame, 20);
+        outputContext.putImageData(frame, 0, 0);
+        requestAnimationFrame(computeFrame);
     }
 
     const isWithinBackgroundRectangle = (x, y) => {
@@ -230,14 +239,10 @@ const runGreenScreen = () => {
 
     function init() {
         video = document.getElementById('video');
-
-        c1 = document.getElementById('output-canvas');
-        ctx1 = c1.getContext('2d');
-
-        c_tmp = document.createElement('canvas');
-        c_tmp.setAttribute('width', clientWidth);
-        c_tmp.setAttribute('height', clientHeight);
-        ctx_tmp = c_tmp.getContext('2d');
+        outputContext = outputCanvas.getContext('2d');
+        tmpCanvas.setAttribute('width', clientWidth);
+        tmpCanvas.setAttribute('height', clientHeight);
+        tmpContext = tmpCanvas.getContext('2d');
 
         const image = new Image();
         image.src = '../img/here-soon.png';
@@ -257,8 +262,6 @@ const runGreenScreen = () => {
             );
         };
 
-        video.addEventListener('play', computeFrame);
-        // img_gal = document.createElement('img');
-        // img_gal.src =
+        // video.addEventListener('play', computeFrame);
     }
 };
