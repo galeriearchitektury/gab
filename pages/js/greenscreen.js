@@ -79,15 +79,15 @@ const initControls = () => {
     document.getElementById('width').innerText = clientWidth;
     document.getElementById('height').innerText = clientHeight;
 
-    document.getElementById('fullscreen').addEventListener('click', () => {
-        const elem = document.documentElement;
-        if (!fullscreen) {
-            elem.requestFullscreen();
-        } else {
-            document.exitFullscreen();
-        }
-        fullscreen = !fullscreen;
-    });
+    // document.getElementById('fullscreen').addEventListener('click', () => {
+    //     const elem = document.documentElement;
+    //     if (!fullscreen) {
+    //         elem.requestFullscreen();
+    //     } else {
+    //         document.exitFullscreen();
+    //     }
+    //     fullscreen = !fullscreen;
+    // });
 
     video = document.querySelector('video');
     video.width = clientWidth;
@@ -153,9 +153,35 @@ const variantB = () => {
     function handleSuccess(stream) {
         video.srcObject = stream;
 
-        const { width: videoWidth, height: videoHeight } = stream
+        let { width: videoWidth, height: videoHeight } = stream
             .getTracks()[0]
             .getSettings();
+
+        clientWidth = window.innerWidth;
+        clientHeight = window.innerHeight;
+
+        let factor;
+        const isPortrait = clientWidth < clientHeight;
+        if (isPortrait) {
+            factor = clientHeight / videoHeight;
+        } else {
+            factor = clientWidth / videoWidth;
+        }
+        videoWidth = Number.parseInt(videoWidth * factor, 10);
+        videoHeight = Number.parseInt(videoHeight * factor, 10);
+
+        if (isPortrait) {
+            const leftMargin = `${(clientWidth - videoWidth) / 2}px`;
+            video.style.marginLeft = leftMargin;
+            outputCanvas.style.marginLeft = leftMargin;
+        } else {
+            const topMargin = `${(clientHeight - videoHeight) / 2}px`;
+            video.style.marginTop = topMargin;
+            outputCanvas.style.marginTop = topMargin;
+        }
+
+        // videoWidth = Number.parseInt(videoWidth * 1.5, 10);
+        // videoHeight = Number.parseInt(videoHeight * 1.5, 10);
 
         // canvas, video, tmpCanvas, client
 
@@ -169,8 +195,6 @@ const variantB = () => {
         // tmpCanvas.width = videoWidth;
         // tmpCanvas.height = videoHeight;
 
-        clientWidth = window.innerWidth;
-        clientHeight = window.innerHeight;
         video.width = videoWidth;
         video.height = videoHeight;
         outputCanvas.width = videoWidth;
