@@ -10,13 +10,14 @@
 import { variantA } from './greenscreen-variant-a.js';
 
 let rColor, gColor, bColor, rRange, gRange, bRange;
-let clientWidth, clientHeight;
+let clientWidth, clientHeight, videoWidth, videoHeight;
 let outputCanvas,
     outputContext,
     video,
     tmpCanvas,
     tmpContext,
-    fullscreen = false;
+    fullscreen = false,
+    isPortrait;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -127,12 +128,6 @@ const hasRequiredColor = (r, g, b) =>
 const variantB = () => {
     initControls();
     createTmpCanvas();
-    tmpCanvas.setAttribute('width', clientWidth);
-    tmpCanvas.setAttribute('height', clientHeight);
-    tmpContext = tmpCanvas.getContext('2d');
-
-    video.width = clientWidth;
-    video.height = clientHeight;
 
     const constraints = {
         audio: false,
@@ -158,23 +153,65 @@ const variantB = () => {
         video.srcObject = stream;
 
         let { width, height } = stream.getTracks()[0].getSettings();
+
+        videoWidth = width;
+        videoHeight = height;
+        outputCanvas.width = videoWidth;
+        outputCanvas.height = videoHeight;
+        video.widh = videoWidth;
+        video.height = videoHeight;
+
+        clientWidth = window.innerWidth;
+        clientHeight = window.innerHeight;
+        isPortrait = clientHeight > clientWidth;
+
+        const cameraAspectRatio =
+            Math.max(videoWidth, videoHeight) /
+            Math.min(videoWidth, videoHeight);
+        console.log(cameraAspectRatio);
+
+        let displayedWidth, displayedHeight;
+        const smallerViewPortDimension = Math.min(clientWidth, clientHeight);
+        const computedBiggerDimension = Number.parseInt(
+            cameraAspectRatio * smallerViewPortDimension
+        );
+        if (isPortrait) {
+            displayedWidth = smallerViewPortDimension;
+            displayedHeight = computedBiggerDimension;
+        } else {
+            displayedWidth = computedBiggerDimension;
+            displayedHeight = smallerViewPortDimension;
+        }
+
+        tmpCanvas.setAttribute('width', clientWidth);
+        tmpCanvas.setAttribute('height', clientHeight);
+        
+        tmpContext = tmpCanvas.getContext('2d');
+
+        video.width = videoWidth;
+        video.height = videoHeight;
+
         console.log(width, height);
         document.getElementById('videowidth').innerText = width;
         document.getElementById('videoheight').innerText = height;
 
         const updateCanvas = () => {
-            console.log('updating');
+            // console.log(
+            //     'updating',
+            //     clientWidth * clientHeight * 4,
+            //     videoWidth * videoHeight * 4
+            // );
             tmpContext.drawImage(video, 0, 0, clientWidth, clientHeight);
             let videoFrame = tmpContext.getImageData(
                 0,
                 0,
-                clientWidth,
-                clientHeight
+                videoWidth,
+                videoHeight
             );
 
-            const arr = new Uint8ClampedArray(clientHeight * clientWidth * 4);
+            const arr = new Uint8ClampedArray(videoHeight * videoWidth * 4);
             arr.fill(0, 0, arr.length - 1);
-            const frame = new ImageData(arr, clientWidth);
+            const frame = new ImageData(arr, videoWidth);
 
             for (let i = 0; i < videoFrame.data.length / 4; i++) {
                 let r = videoFrame.data[i * 4 + 0];
@@ -182,7 +219,7 @@ const variantB = () => {
                 let b = videoFrame.data[i * 4 + 2];
 
                 const width = clientHeight;
-                const height = clientWidth;
+                const height = videoWidth;
 
                 const x = Math.floor(i % width);
                 const y = Math.floor(i / width);
@@ -219,8 +256,6 @@ const variantB = () => {
 };
 
 export const runGreenScreen = () => {
-    clientWidth = window.innerWidth;
-    clientHeight = window.innerHeight;
     // variantA();
     variantB();
 };
