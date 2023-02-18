@@ -7,7 +7,9 @@
     <code>grabFrame()</code>.
 </p> -->
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script src="../js/greenscreen.js" type="text/javascript"></script>
+<script src="../js/greenscreen-variant-a.js" type="module"></script>
+<script src="../js/greenscreen.js" type="module"></script>
+<script src="../js/greenscreen-main.js" type="module"></script>
 
 <video playsinline autoplay id="video"></video>
 <div id="results">
@@ -31,7 +33,7 @@
                             max="255"
                             value="187"
                             id="r-color"
-                        />
+/>
                         <label for="r-color">Red - </label>
                         <label id="r-value">187</label>
                     </div>
@@ -41,12 +43,12 @@
                             max="255"
                             value="109"
                             id="g-color"
-                        />
+/>
                         <label for="g-color">Green - </label>
                         <label id="g-value">109</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="62" id="b-color" />
+                        <input type="range" max="255" value="62" id="b-color"/>
                         <label for="b-color">Blue - </label>
                         <label id="b-value">62</label>
                     </div>
@@ -54,17 +56,17 @@
 
                 <div>
                     <div>
-                        <input type="range" max="255" value="56" id="r-range" />
+                        <input type="range" max="255" value="56" id="r-range"/>
                         <label for="r-range">Red range - </label>
                         <label id="r-range-value">56</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="50" id="g-range" />
+                        <input type="range" max="255" value="50" id="g-range"/>
                         <label for="g-color">Green range - </label>
                         <label id="g-range-value">50</label>
                     </div>
                     <div>
-                        <input type="range" max="255" value="41" id="b-range" />
+                        <input type="range" max="255" value="41" id="b-range"/>
                         <label for="b-color">Blue range - </label>
                         <label id="b-range-value">41</label>
                     </div>
@@ -74,14 +76,7 @@
     </div>
 
     <div id="canvas-holder"></div>
-    <img src="" width="640" height="480" id="" />
+    <img src="" width="640" height="480" id=""/>
 </div>
 
-<script type="text/javascript">
-    window.addEventListener('DOMContentLoaded', (event) => {
-        console.log('wtf');
-        runGreenScreen();
-    });
-</script>
-
-<link rel="stylesheet" href="../css/greenscreen.css" />
+<link rel="stylesheet" href="../css/greenscreen.css"/>
