@@ -10,7 +10,7 @@
 import { variantA } from './greenscreen-variant-a.js';
 
 let rColor, gColor, bColor, rRange, gRange, bRange;
-let clientWidth, clientHeight, videoWidth, videoHeight;
+let clientWidth, clientHeight, finalWidth, finalHeight;
 let outputCanvas,
     outputContext,
     video,
@@ -111,6 +111,7 @@ const createNewCanvas = () => {
 
 const createTmpCanvas = () => {
     tmpCanvas = document.createElement('canvas');
+    tmpContext = tmpCanvas.getContext('2d');
 };
 
 const isWithinBackgroundRectangle = (x, y) => {
@@ -152,56 +153,33 @@ const variantB = () => {
     function handleSuccess(stream) {
         video.srcObject = stream;
 
-        let { width, height } = stream.getTracks()[0].getSettings();
+        const { width: videoWidth, height: videoHeight } = stream
+            .getTracks()[0]
+            .getSettings();
 
-        videoWidth = width;
-        videoHeight = height;
-        outputCanvas.width = videoWidth;
-        outputCanvas.height = videoHeight;
-        video.widh = videoWidth;
-        video.height = videoHeight;
+        // canvas, video, tmpCanvas, client
+
+        // WORKS OK ON DESKTOP BUT NEEDS TO SCALE UP
+        // clientWidth = window.innerWidth;
+        // clientHeight = window.innerHeight;
+        // video.width = videoWidth;
+        // video.height = videoHeight;
+        // outputCanvas.width = videoWidth;
+        // outputCanvas.height = videoHeight;
+        // tmpCanvas.width = videoWidth;
+        // tmpCanvas.height = videoHeight;
 
         clientWidth = window.innerWidth;
         clientHeight = window.innerHeight;
-        isPortrait = clientHeight > clientWidth;
-
-        const cameraAspectRatio =
-            Math.max(videoWidth, videoHeight) /
-            Math.min(videoWidth, videoHeight);
-        console.log(cameraAspectRatio);
-
-        let displayedWidth, displayedHeight;
-        const smallerViewPortDimension = Math.min(clientWidth, clientHeight);
-        const computedBiggerDimension = Number.parseInt(
-            cameraAspectRatio * smallerViewPortDimension
-        );
-        if (isPortrait) {
-            displayedWidth = smallerViewPortDimension;
-            displayedHeight = computedBiggerDimension;
-        } else {
-            displayedWidth = computedBiggerDimension;
-            displayedHeight = smallerViewPortDimension;
-        }
-
-        tmpCanvas.setAttribute('width', clientWidth);
-        tmpCanvas.setAttribute('height', clientHeight);
-        
-        tmpContext = tmpCanvas.getContext('2d');
-
         video.width = videoWidth;
         video.height = videoHeight;
-
-        console.log(width, height);
-        document.getElementById('videowidth').innerText = width;
-        document.getElementById('videoheight').innerText = height;
+        outputCanvas.width = videoWidth;
+        outputCanvas.height = videoHeight;
+        tmpCanvas.width = videoWidth;
+        tmpCanvas.height = videoHeight;
 
         const updateCanvas = () => {
-            // console.log(
-            //     'updating',
-            //     clientWidth * clientHeight * 4,
-            //     videoWidth * videoHeight * 4
-            // );
-            tmpContext.drawImage(video, 0, 0, clientWidth, clientHeight);
+            tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
             let videoFrame = tmpContext.getImageData(
                 0,
                 0,
@@ -218,8 +196,9 @@ const variantB = () => {
                 let g = videoFrame.data[i * 4 + 1];
                 let b = videoFrame.data[i * 4 + 2];
 
-                const width = clientHeight;
-                const height = videoWidth;
+                // weird
+                const width = videoHeight;
+                const height = videoHeight;
 
                 const x = Math.floor(i % width);
                 const y = Math.floor(i / width);

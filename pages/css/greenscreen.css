@@ -34,19 +34,8 @@ canvas {
     position: absolute;
     top: 0;
     left: 0;
-    /* width: 100vw;
-    height: 100vh; */
     border: 1px solid red;
     object-fit: cover;
-}
-
-video {
-    /* display: none; */
-    /* object-fit: contain; */
-    /* width: 1648px;  */
-    /* height: 3168px; */
-    /* object-fit: fill; */
-    /* display: none; */
 }
 
 canvas {
@@ -60,7 +49,8 @@ img {
     position: absolute;
 }
 
-input, label {
+input,
+label {
     z-index: 600;
     position: relative;
 }
