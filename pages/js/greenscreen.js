@@ -30,6 +30,7 @@ const colorChange = (e, color) => {
         bColor = parsed;
     }
     document.querySelector(`#${color}-value`).innerHTML = parsed;
+    refreshColorSampler();
     logSettings();
 };
 
@@ -95,6 +96,12 @@ const initControls = () => {
     createNewCanvas();
     outputCanvas.width = clientWidth;
     outputCanvas.height = clientHeight;
+    refreshColorSampler();
+};
+
+const refreshColorSampler = () => {
+    const colorSample = document.getElementById('color-sample');
+    colorSample.style.backgroundColor = `rgb(${rColor}, ${gColor}, ${bColor})`;
 };
 
 const createNewCanvas = () => {
@@ -110,7 +117,8 @@ const createNewCanvas = () => {
 };
 
 const createTmpCanvas = () => {
-    tmpCanvas = document.createElement('canvas');
+    // tmpCanvas = document.createElement('canvas');
+    tmpCanvas = new OffscreenCanvas(window.innerWidth, window.innerHeight);
     tmpContext = tmpCanvas.getContext('2d');
 };
 
@@ -163,37 +171,10 @@ const variantB = () => {
         let factor;
         const isPortrait = clientWidth < clientHeight;
         if (isPortrait) {
-            factor = clientHeight / videoHeight;
+            factor = Number.parseFloat(clientHeight / videoHeight, 100);
         } else {
-            factor = clientWidth / videoWidth;
+            factor = Number.parseFloat(clientWidth / videoWidth, 100);
         }
-        videoWidth = Number.parseInt(videoWidth * factor, 10);
-        videoHeight = Number.parseInt(videoHeight * factor, 10);
-
-        if (isPortrait) {
-            const leftMargin = `${(clientWidth - videoWidth) / 2}px`;
-            video.style.marginLeft = leftMargin;
-            outputCanvas.style.marginLeft = leftMargin;
-        } else {
-            const topMargin = `${(clientHeight - videoHeight) / 2}px`;
-            video.style.marginTop = topMargin;
-            outputCanvas.style.marginTop = topMargin;
-        }
-
-        // videoWidth = Number.parseInt(videoWidth * 1.5, 10);
-        // videoHeight = Number.parseInt(videoHeight * 1.5, 10);
-
-        // canvas, video, tmpCanvas, client
-
-        // WORKS OK ON DESKTOP BUT NEEDS TO SCALE UP
-        // clientWidth = window.innerWidth;
-        // clientHeight = window.innerHeight;
-        // video.width = videoWidth;
-        // video.height = videoHeight;
-        // outputCanvas.width = videoWidth;
-        // outputCanvas.height = videoHeight;
-        // tmpCanvas.width = videoWidth;
-        // tmpCanvas.height = videoHeight;
 
         video.width = videoWidth;
         video.height = videoHeight;
@@ -201,6 +182,34 @@ const variantB = () => {
         outputCanvas.height = videoHeight;
         tmpCanvas.width = videoWidth;
         tmpCanvas.height = videoHeight;
+
+        // factor = 1
+        video.style.transform = `scale(${factor})`;
+        video.style.transformOrigin = '0 0';
+        outputCanvas.style.transform = `scale(${factor})`;
+        outputCanvas.style.transformOrigin = '0 0';
+
+        // requestAnimationFrame();
+
+        const boundingRect = document
+            .getElementsByTagName('video')[0]
+            .getBoundingClientRect();
+
+        if (isPortrait) {
+            const margin = Number.parseInt(
+                (clientWidth - Number.parseInt(boundingRect.width, 10)) / 2,
+                10
+            );
+            video.style.marginLeft = `${margin}px`;
+            outputCanvas.style.marginLeft = `${margin}px`;
+        } else {
+            const margin = Number.parseInt(
+                (clientHeight - Number.parseInt(boundingRect.height, 10)) / 2,
+                10
+            );
+            video.style.marginTop = `${margin}px`;
+            outputCanvas.style.marginTop = `${margin}px`;
+        }
 
         const updateCanvas = () => {
             tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
