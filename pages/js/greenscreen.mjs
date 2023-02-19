@@ -147,8 +147,8 @@ const variantB = () => {
             },
 
             height: {
-                min: 1920,
-                // ideal: 1280,
+                min: 720,
+                ideal: 1920,
                 // max: 1920,
             },
         },
@@ -236,6 +236,67 @@ const variantB = () => {
         };
 
         const updateCanvas = () => {
+            let topLeftX = 0,
+                topLeftY = 0,
+                topRightX = 0,
+                topRightY = 0,
+                bottomLeftX = 0,
+                bottomLeftY = 0,
+                bottomRightX = 0,
+                bottomRightY = 0;
+            const updateCorners = (x, y) => {
+                if (!topLeftX || x < topLeftX) {
+                    topLeftX = x;
+                }
+                if (!topLeftY || y < topLeftY) {
+                    topLeftY = y;
+                }
+
+                if (!topRightX || x > topRightX) {
+                    topRightX = x;
+                }
+
+                if (!topRightY || y < topRightY) {
+                    topRightY = y;
+                }
+
+                if (!bottomLeftX || x < bottomLeftX) {
+                    bottomLeftX = x;
+                }
+                if (!bottomLeftY || y > bottomLeftY) {
+                    bottomLeftY = y;
+                }
+
+                if (!bottomRightX || x > bottomRightX) {
+                    bottomRightX = x;
+                }
+
+                if (!bottomRightY || y > bottomRightY) {
+                    bottomRightY = y;
+                }
+                const width = Number.parseInt(
+                    (topLeftX + topRightX + bottomLeftX + bottomRightX) / 4,
+                    10
+                );
+
+                const height = Number.parseInt(
+                    (topLeftY + topRightY + bottomLeftY + bottomRightY) / 4,
+                    10
+                );
+
+                // console.log(width, height);
+
+                // console.log(
+                //     topLeftX,
+                //     topLeftY,
+                //     topRightX,
+                //     topRightY,
+                //     bottomLeftX,
+                //     bottomLeftY,
+                //     bottomRightX,
+                //     bottomRightY
+                // );
+            };
             tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
             let videoFrame = tmpContext.getImageData(
                 0,
@@ -249,13 +310,14 @@ const variantB = () => {
 
             const frame = new ImageData(arr, videoWidth);
 
+            outputContext.clearRect(0, 0, videoWidth, videoHeight);
             for (let i = 0; i < videoFrame.data.length / 4; i++) {
                 let r = videoFrame.data[i * 4 + 0];
                 let g = videoFrame.data[i * 4 + 1];
                 let b = videoFrame.data[i * 4 + 2];
 
                 // weird
-                const width = videoHeight;
+                const width = videoWidth;
                 const height = videoHeight;
 
                 const x = Math.floor(i % width);
@@ -266,13 +328,44 @@ const variantB = () => {
                     hasRequiredColor(r, g, b) &&
                     isWithinBackgroundRectangle(x, y)
                 ) {
-                    frame.data[i * 4 + 0] = 192;
-                    frame.data[i * 4 + 1] = 32;
-                    frame.data[i * 4 + 2] = 128;
+                    // frame.data[i * 4 + 0] = 192;
+                    // frame.data[i * 4 + 1] = 32;
+                    // frame.data[i * 4 + 2] = 128;
+                    // frame.data[i * 4 + 3] = 255;
+                    
+                    // const backdropPixels = imageData.data.length / 4;
+                    // const availableSpace = width * height;
+                    // const xOffsetOnScreen =
+                    //     x - Number.parseInt((topLeftX + bottomLeftX) / 2, 10);
+                    // const yOffsetOnScreen =
+                    //     y - Number.parseInt((bottomLeftY + topLeftY) / 2, 10);
+                    // xOffsetPercentage = width / xOffsetOnScreen;
+                    // yOffsetPercentage = width / yOffsetOnScreen;
+
+                    // 17000 * 6200 * 4
+
+                    // const indexInBackdrop = ???
+                    frame.data[i * 4 + 0] = 0;
+                    frame.data[i * 4 + 1] = 0;
+                    frame.data[i * 4 + 2] = 0;
                     frame.data[i * 4 + 3] = 255;
+                    updateCorners(x, y);
                 }
             }
+
+            outputContext.strokeStyle = '#FF0000';
+            // outputContext.arc(topLeftX, topLeftY, 10, 2 * Math.PI, false);
+            // outputContext.arc(topRightX, topRightY, 10, 2 * Math.PI, false);
+            // outputContext.arc(bottomLeftX, bottomLeftY, 10, 2 * Math.PI, false);
+            // outputContext.arc(
+            //     bottomRightX,
+            //     bottomRightY,
+            //     10,
+            //     2 * Math.PI,
+            //     false
+            // );
             outputContext.putImageData(frame, 0, 0);
+            outputContext.stroke();
             requestAnimationFrame(updateCanvas);
         };
 
