@@ -40,6 +40,7 @@ module.exports = function (eleventyConfig) {
             'ico',
             'json',
             'html',
+            'mjs',
             'ico',
             'patt',
             'otf',
