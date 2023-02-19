@@ -235,15 +235,16 @@ const variantB = () => {
             // document.getElementById('test').appendChild(imgCanvas);
         };
 
+        let topLeftX = 0,
+            topLeftY = 0,
+            topRightX = 0,
+            topRightY = 0,
+            bottomLeftX = 0,
+            bottomLeftY = 0,
+            bottomRightX = 0,
+            bottomRightY = 0;
+
         const updateCanvas = () => {
-            let topLeftX = 0,
-                topLeftY = 0,
-                topRightX = 0,
-                topRightY = 0,
-                bottomLeftX = 0,
-                bottomLeftY = 0,
-                bottomRightX = 0,
-                bottomRightY = 0;
             const updateCorners = (x, y) => {
                 if (!topLeftX || x < topLeftX) {
                     topLeftX = x;
@@ -274,15 +275,6 @@ const variantB = () => {
                 if (!bottomRightY || y > bottomRightY) {
                     bottomRightY = y;
                 }
-                const width = Number.parseInt(
-                    (topLeftX + topRightX + bottomLeftX + bottomRightX) / 4,
-                    10
-                );
-
-                const height = Number.parseInt(
-                    (topLeftY + topRightY + bottomLeftY + bottomRightY) / 4,
-                    10
-                );
 
                 // console.log(width, height);
 
@@ -297,6 +289,39 @@ const variantB = () => {
                 //     bottomRightY
                 // );
             };
+
+            const width = Number.parseInt(
+                (topRightX - topLeftX + (bottomRightX - bottomLeftX)) / 2,
+                10
+            );
+
+            const height = Number.parseInt(
+                (bottomLeftY - topLeftY + (bottomRightY - topRightY)) / 2,
+                10
+            );
+
+            if (width && height) {
+                console.log(width, height);
+                // console.log(topLeftX, topLeftY);
+                imgContext.drawImage(
+                    image,
+                    0,
+                    0,
+                    1700,
+                    620,
+                    topLeftX,
+                    topLeftY,
+                    width,
+                    height
+                );
+                imageData = imgContext.getImageData(
+                    0,
+                    0,
+                    videoWidth,
+                    videoHeight
+                );
+            }
+
             tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
             let videoFrame = tmpContext.getImageData(
                 0,
@@ -311,6 +336,14 @@ const variantB = () => {
             const frame = new ImageData(arr, videoWidth);
 
             outputContext.clearRect(0, 0, videoWidth, videoHeight);
+            topLeftX = 0;
+            topLeftY = 0;
+            topRightX = 0;
+            topRightY = 0;
+            bottomLeftX = 0;
+            bottomLeftY = 0;
+            bottomRightX = 0;
+            bottomRightY = 0;
             for (let i = 0; i < videoFrame.data.length / 4; i++) {
                 let r = videoFrame.data[i * 4 + 0];
                 let g = videoFrame.data[i * 4 + 1];
@@ -332,7 +365,7 @@ const variantB = () => {
                     // frame.data[i * 4 + 1] = 32;
                     // frame.data[i * 4 + 2] = 128;
                     // frame.data[i * 4 + 3] = 255;
-                    
+
                     // const backdropPixels = imageData.data.length / 4;
                     // const availableSpace = width * height;
                     // const xOffsetOnScreen =
@@ -345,10 +378,10 @@ const variantB = () => {
                     // 17000 * 6200 * 4
 
                     // const indexInBackdrop = ???
-                    frame.data[i * 4 + 0] = 0;
-                    frame.data[i * 4 + 1] = 0;
-                    frame.data[i * 4 + 2] = 0;
-                    frame.data[i * 4 + 3] = 255;
+                    frame.data[i * 4 + 0] = imageData.data[i * 4 + 0];
+                    frame.data[i * 4 + 1] = imageData.data[i * 4 + 1];
+                    frame.data[i * 4 + 2] = imageData.data[i * 4 + 2];
+                    frame.data[i * 4 + 3] = imageData.data[i * 4 + 3];
                     updateCorners(x, y);
                 }
             }

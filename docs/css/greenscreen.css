@@ -72,7 +72,7 @@ input[type='range']::-webkit-slider-thumb {
     height: 8vmin;
     width: 8vmin;
     border-radius: 50%;
-    background: navy;
+    background: rgba(255, 255, 255, 0.3);
     cursor: ew-resize;
     box-shadow: 0 0 2px 0 white;
     transition: background 0.3s ease-in-out;
