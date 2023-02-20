@@ -300,27 +300,27 @@ const variantB = () => {
                 10
             );
 
-            if (width && height) {
-                console.log(width, height);
-                // console.log(topLeftX, topLeftY);
-                imgContext.drawImage(
-                    image,
-                    0,
-                    0,
-                    1700,
-                    620,
-                    topLeftX,
-                    topLeftY,
-                    width,
-                    height
-                );
-                imageData = imgContext.getImageData(
-                    0,
-                    0,
-                    videoWidth,
-                    videoHeight
-                );
-            }
+            // if (width && height) {
+            //     console.log(width, height);
+            //     // console.log(topLeftX, topLeftY);
+            //     imgContext.drawImage(
+            //         image,
+            //         0,
+            //         0,
+            //         1700,
+            //         620,
+            //         topLeftX,
+            //         topLeftY,
+            //         width,
+            //         height
+            //     );
+            //     imageData = imgContext.getImageData(
+            //         0,
+            //         0,
+            //         videoWidth,
+            //         videoHeight
+            //     );
+            // }
 
             tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
             let videoFrame = tmpContext.getImageData(
@@ -361,10 +361,10 @@ const variantB = () => {
                     hasRequiredColor(r, g, b) &&
                     isWithinBackgroundRectangle(x, y)
                 ) {
-                    // frame.data[i * 4 + 0] = 192;
-                    // frame.data[i * 4 + 1] = 32;
-                    // frame.data[i * 4 + 2] = 128;
-                    // frame.data[i * 4 + 3] = 255;
+                    frame.data[i * 4 + 0] = 192;
+                    frame.data[i * 4 + 1] = 32;
+                    frame.data[i * 4 + 2] = 128;
+                    frame.data[i * 4 + 3] = 255;
 
                     // const backdropPixels = imageData.data.length / 4;
                     // const availableSpace = width * height;
@@ -378,10 +378,12 @@ const variantB = () => {
                     // 17000 * 6200 * 4
 
                     // const indexInBackdrop = ???
-                    frame.data[i * 4 + 0] = imageData.data[i * 4 + 0];
-                    frame.data[i * 4 + 1] = imageData.data[i * 4 + 1];
-                    frame.data[i * 4 + 2] = imageData.data[i * 4 + 2];
-                    frame.data[i * 4 + 3] = imageData.data[i * 4 + 3];
+
+
+                    // frame.data[i * 4 + 0] = imageData.data[i * 4 + 0];
+                    // frame.data[i * 4 + 1] = imageData.data[i * 4 + 1];
+                    // frame.data[i * 4 + 2] = imageData.data[i * 4 + 2];
+                    // frame.data[i * 4 + 3] = imageData.data[i * 4 + 3];
                     updateCorners(x, y);
                 }
             }
