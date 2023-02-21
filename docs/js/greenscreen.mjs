@@ -71,6 +71,17 @@ const logSettings = () => {
     console.log(rRange, gRange, bRange);
 };
 
+function b64toBlob(dataURI) {
+    var byteString = atob(dataURI.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/png' });
+}
+
 const combineVideoAndCanvas = async () => {
     const thirdCanvas = document.createElement('canvas');
     const thirdContext = thirdCanvas.getContext('2d');
@@ -101,12 +112,12 @@ const combineVideoAndCanvas = async () => {
     const base = thirdCanvas.toDataURL();
     preview.src = base;
 
-    const fetched = await fetch(preview.src);
-    const blob = await fetched.blob();
-    saveButton.disabled = false;
+    const blob = b64toBlob(base);
+
     fileToSave = new File([blob], `${new Date().getTime()}.png`, {
-        type: 'image/jpeg',
+        type: 'image/png',
     });
+    saveButton.disabled = false;
 
     return base;
 };
