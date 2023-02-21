@@ -82,54 +82,40 @@ function b64toBlob(dataURI) {
     return new Blob([ab], { type: 'image/png' });
 }
 
-const combineVideoAndCanvas = async () => {
-    const thirdCanvas = document.createElement('canvas');
-    const thirdContext = thirdCanvas.getContext('2d');
-    thirdCanvas.width = videoWidth;
-    thirdCanvas.height = videoHeight;
-
-    const finalFrame = thirdContext.getImageData(0, 0, videoWidth, videoHeight);
-
-    let videoFrame = tmpContext.getImageData(0, 0, videoWidth, videoHeight);
-
-    let keyedFrame = outputContext.getImageData(0, 0, videoWidth, videoHeight);
-
-    for (let i = 0; i < videoFrame.data.length / 4; i++) {
-        if (keyedFrame.data[i * 4 + 3] === 255) {
-            finalFrame.data[i * 4] = keyedFrame.data[i * 4];
-            finalFrame.data[i * 4 + 1] = keyedFrame.data[i * 4 + 1];
-            finalFrame.data[i * 4 + 2] = keyedFrame.data[i * 4 + 2];
-            finalFrame.data[i * 4 + 3] = keyedFrame.data[i * 4 + 3];
-        } else {
-            finalFrame.data[i * 4] = videoFrame.data[i * 4];
-            finalFrame.data[i * 4 + 1] = videoFrame.data[i * 4 + 1];
-            finalFrame.data[i * 4 + 2] = videoFrame.data[i * 4 + 2];
-            finalFrame.data[i * 4 + 3] = videoFrame.data[i * 4 + 3];
-        }
-    }
-
-    thirdContext.putImageData(finalFrame, 0, 0);
-    const base = thirdCanvas.toDataURL();
-    preview.src = base;
-
-    const blob = b64toBlob(base);
-
-    fileToSave = new File([blob], `${new Date().getTime()}.png`, {
-        type: 'image/png',
-    });
-    saveButton.disabled = false;
-
-    return base;
-};
-
-const snap = () => {
+const snap = async () => {
     spinner.style.display = 'block';
     preview.style.display = 'block';
     outputCanvas.style.display = 'none';
     video.style.display = 'none';
     snapButton.disabled = true;
     redoButton.disabled = false;
-    (async () => await combineVideoAndCanvas())();
+    const thirdCanvas = document.createElement('canvas');
+    thirdCanvas.width = videoWidth;
+    thirdCanvas.height = videoHeight;
+    const thirdContext = thirdCanvas.getContext('2d');
+    const worker = new Worker('../js/snap-worker.js');
+
+    const finalFrame = thirdContext.getImageData(0, 0, videoWidth, videoHeight);
+    let videoFrame = tmpContext.getImageData(0, 0, videoWidth, videoHeight);
+    let keyedFrame = outputContext.getImageData(0, 0, videoWidth, videoHeight);
+
+    worker.postMessage([finalFrame, videoFrame, keyedFrame]);
+
+    worker.addEventListener('message', (event) => {
+        const processedFrame = event.data;
+
+        thirdContext.putImageData(processedFrame, 0, 0);
+        const base = thirdCanvas.toDataURL();
+        preview.src = base;
+
+        const blob = b64toBlob(base);
+
+        fileToSave = new File([blob], `${new Date().getTime()}.png`, {
+            type: 'image/png',
+        });
+        saveButton.disabled = false;
+        spinner.style.display = 'none';
+    });
 };
 
 const redo = () => {
@@ -182,7 +168,9 @@ const initControls = () => {
     gRangeInput.addEventListener('change', (e) => rangeChange(e, 'g'));
     bRangeInput.addEventListener('change', (e) => rangeChange(e, 'b'));
 
-    snapButton.addEventListener('click', snap);
+    snapButton.addEventListener('click', async () => {
+        snap();
+    });
     redoButton.addEventListener('click', redo);
     saveButton.addEventListener('click', save);
 
@@ -288,7 +276,6 @@ const variantB = () => {
         tmpCanvas.width = videoWidth;
         tmpCanvas.height = videoHeight;
         preview.width = videoWidth;
-        preview.height = videoHeight;
 
         video.style.transform = `scale(${factor})`;
         video.style.transformOrigin = '0 0';
