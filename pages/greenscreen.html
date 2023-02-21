@@ -16,11 +16,13 @@
     <canvas id="output-canvas"></canvas>
     <div id="ui">
         <button id="snap">Snap!</button>
-        <button id="redo">Redo</button>
-        <button id="save">Save</button>
+        <button id="redo" disabled>Redo</button>
+        <button id="save" disabled>Save</button>
     </div>
 
     <img id="preview" />
+    <span id="spinner">Photo is being loaded</span>
+    <div id="preview-bcg"></div>
 </div>
 
 <div id="controls">
@@ -32,17 +34,17 @@
     <div style="display: flex; flex-direction: row; flex-wrap: wrap">
         <div>
             <div>
-                <input type="range" max="255" value="190" id="r-color" />
+                <input type="range" max="255" value="235" id="r-color" />
                 <label for="r-color">Red - </label>
                 <label id="r-value">190</label>
             </div>
             <div>
-                <input type="range" max="255" value="103" id="g-color" />
+                <input type="range" max="255" value="133" id="g-color" />
                 <label for="g-color">Green - </label>
                 <label id="g-value">103</label>
             </div>
             <div>
-                <input type="range" max="255" value="78" id="b-color" />
+                <input type="range" max="255" value="30" id="b-color" />
                 <label for="b-color">Blue - </label>
                 <label id="b-value">78</label>
             </div>

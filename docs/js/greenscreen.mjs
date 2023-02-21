@@ -23,8 +23,10 @@ let outputCanvas,
     tmpCanvas,
     tmpContext,
     preview,
+    previewBcg,
+    spinner,
     fullscreen = false,
-    isPortrait;
+    pictureIsLoading = false;
 
 // wide
 let backdropWidth = 1700;
@@ -98,16 +100,24 @@ const combineVideoAndCanvas = () => {
 };
 
 const snap = () => {
+    pictureIsLoading = true;
+    snapButton.disabled = !snapButton.disabled;
+    spinner.style.display = 'block';
+    previewBcg.style.display = 'block';
     preview.src = combineVideoAndCanvas();
+    pictureIsLoading = false;
+    redoButton.disabled = !redoButton.disabled;
+    saveButton.disabled = !saveButton.disabled;
     preview.style.display = 'block';
-    snapButton.style.display = 'none';
-    redoButton.style.display = 'block';
-    saveButton.style.display = 'block';
+    spinner.style.display = 'none';
 };
 
 const redo = () => {
+    previewBcg.style.display = 'none';
+    snapButton.disabled = !snapButton.disabled;
     preview.style.display = 'none';
-    snapButton.style.display = 'block';
+    redoButton.disabled = !redoButton.disabled;
+    saveButton.disabled = !saveButton.disabled;
 };
 
 const save = () => {};
@@ -123,6 +133,8 @@ const initControls = () => {
     redoButton = document.querySelector('#redo');
     saveButton = document.querySelector('#save');
     preview = document.getElementById('preview');
+    previewBcg = document.getElementById('preview-bcg');
+    spinner = document.getElementById('spinner');
 
     rColor = Number.parseInt(rColorInput.value, 10);
     gColor = Number.parseInt(gColorInput.value, 10);
@@ -181,8 +193,8 @@ const createTmpCanvas = () => {
 };
 
 const isWithinBackgroundRectangle = (x, y) => {
-    // return true;
-    return x > 50 && x < 870 && y > 120 && y < 400;
+    return true;
+    // return x > 50 && x < 870 && y > 120 && y < 400;
 };
 
 const hasRequiredColor = (r, g, b) =>
@@ -234,12 +246,10 @@ const variantB = () => {
         clientHeight = window.innerHeight;
 
         let factor = 1;
-        const isPortrait = clientWidth < clientHeight;
-        if (isPortrait) {
-            factor = Number.parseFloat(clientWidth / videoWidth, 100);
-        } else {
-            factor = Number.parseFloat(clientWidth / videoWidth, 100);
-        }
+        factor =
+            videoWidth <= clientWidth
+                ? Number.parseFloat(videoWidth / clientWidth, 100)
+                : Number.parseFloat(clientWidth / videoWidth, 100);
 
         video.width = videoWidth;
         video.height = videoHeight;
@@ -247,39 +257,22 @@ const variantB = () => {
         outputCanvas.height = videoHeight;
         tmpCanvas.width = videoWidth;
         tmpCanvas.height = videoHeight;
+        // preview.style.width = `calc(${videoWidth}px - 2rem})`;
+        // preview.style.height = auto;
 
-        // factor = 1
         video.style.transform = `scale(${factor})`;
         video.style.transformOrigin = '0 0';
         outputCanvas.style.transform = `scale(${factor})`;
         outputCanvas.style.transformOrigin = '0 0';
 
-        // requestAnimationFrame();
-
         const boundingRect = document
             .getElementsByTagName('video')[0]
             .getBoundingClientRect();
 
-        const uiPadding = `calc(2rem + ${boundingRect.height}px + 2rem)`;
-        document.getElementById('ui').style.marginTop = uiPadding;
+        console.log(boundingRect);
 
-        // if (isPortrait) {
-        //     const margin = Number.parseInt(
-        //         (clientWidth - Number.parseInt(boundingRect.width, 10)) / 2,
-        //         10
-        //     );
-        //     video.style.marginLeft = `${margin}px`;
-        //     outputCanvas.style.marginLeft = `${margin}px`;
-        // } else {
-        //     const margin = Number.parseInt(
-        //         (clientHeight - Number.parseInt(boundingRect.height, 10)) / 2,
-        //         10
-        //     );
-        //     video.style.marginTop = `${margin}px`;
-        //     outputCanvas.style.marginTop = `${margin}px`;
-        // }
-
-        // const img =
+        // const uiPadding = `calc(2rem + ${boundingRect.height}px + 2rem)`;
+        // document.getElementById('ui').style.marginTop = uiPadding;
 
         const imgCanvas = document.createElement('canvas');
         imgCanvas.width = backdropWidth;
@@ -360,11 +353,6 @@ const variantB = () => {
                     hasRequiredColor(r, g, b) &&
                     isWithinBackgroundRectangle(x, y)
                 ) {
-                    // frame.data[i * 4 + 0] = 192;
-                    // frame.data[i * 4 + 1] = 32;
-                    // frame.data[i * 4 + 2] = 128;
-                    // frame.data[i * 4 + 3] = 255;
-
                     const cutoffWidth = bottomRightX - topLeftX;
                     const cutoffHeight = bottomRightY - topLeftY;
 
@@ -392,7 +380,26 @@ const variantB = () => {
                         // debugger;
                     }
 
-                    if (!y || y < minY) {
+                    const isMinY = (y, minY) => {
+                        let someIsOutOfRange = false;
+                        // todo to (re)think?
+
+                        //     for (let index = 0; index < 10; index++) {
+                        //         const nuIndex = i + width * 4;
+
+                        //         const nuR = videoFrame.data[nuIndex * 4 + 0];
+                        //         const nuG = videoFrame.data[nuIndex * 4 + 1];
+                        //         const nuB = videoFrame.data[nuIndex * 4 + 2];
+
+                        //         if (!hasRequiredColor(nuR, nuG, nuB)) {
+                        //             someIsOutOfRange = true;
+                        //         }
+                        //     }
+
+                        return (!y || y < minY) && !someIsOutOfRange;
+                    };
+
+                    if (isMinY(y, minY, videoFrame, i)) {
                         minY = y;
                     }
                     if (!x || x < minX) {
