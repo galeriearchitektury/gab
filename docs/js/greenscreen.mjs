@@ -5,19 +5,34 @@
 // https://stackoverflow.com/questions/21197707/html5-video-to-canvas-playing-very-slow
 // https://www.mux.com/blog/canvas-adding-filters-and-more-to-video-using-just-a-browser
 
-// const variantA = require('./greenscreen-variant-a.js').variantA;
-
 import { variantA } from './greenscreen-variant-a.mjs';
 
-let rColor, gColor, bColor, rRange, gRange, bRange;
-let clientWidth, clientHeight, finalWidth, finalHeight;
+let rColor,
+    gColor,
+    bColor,
+    rRange,
+    gRange,
+    bRange,
+    snapButton,
+    redoButton,
+    saveButton;
+let clientWidth, clientHeight, videoWidth, videoHeight;
 let outputCanvas,
     outputContext,
     video,
     tmpCanvas,
     tmpContext,
+    preview,
     fullscreen = false,
     isPortrait;
+
+// wide
+let backdropWidth = 1700;
+let backdropHeight = 620;
+
+// cardboard
+// let backdropWidth = 410;
+// let backdropHeight = 260;
 
 const colorChange = (e, color) => {
     const { value } = e.target;
@@ -53,6 +68,50 @@ const logSettings = () => {
     console.log(rRange, gRange, bRange);
 };
 
+const combineVideoAndCanvas = () => {
+    const thirdCanvas = document.createElement('canvas');
+    const thirdContext = thirdCanvas.getContext('2d');
+    thirdCanvas.width = videoWidth;
+    thirdCanvas.height = videoHeight;
+
+    const finalFrame = thirdContext.getImageData(0, 0, videoWidth, videoHeight);
+
+    let videoFrame = tmpContext.getImageData(0, 0, videoWidth, videoHeight);
+
+    let keyedFrame = outputContext.getImageData(0, 0, videoWidth, videoHeight);
+
+    for (let i = 0; i < videoFrame.data.length / 4; i++) {
+        if (keyedFrame.data[i * 4 + 3] === 255) {
+            finalFrame.data[i * 4] = keyedFrame.data[i * 4];
+            finalFrame.data[i * 4 + 1] = keyedFrame.data[i * 4 + 1];
+            finalFrame.data[i * 4 + 2] = keyedFrame.data[i * 4 + 2];
+            finalFrame.data[i * 4 + 3] = keyedFrame.data[i * 4 + 3];
+        } else {
+            finalFrame.data[i * 4] = videoFrame.data[i * 4];
+            finalFrame.data[i * 4 + 1] = videoFrame.data[i * 4 + 1];
+            finalFrame.data[i * 4 + 2] = videoFrame.data[i * 4 + 2];
+            finalFrame.data[i * 4 + 3] = videoFrame.data[i * 4 + 3];
+        }
+    }
+    thirdContext.putImageData(finalFrame, 0, 0);
+    return thirdCanvas.toDataURL();
+};
+
+const snap = () => {
+    preview.src = combineVideoAndCanvas();
+    preview.style.display = 'block';
+    snapButton.style.display = 'none';
+    redoButton.style.display = 'block';
+    saveButton.style.display = 'block';
+};
+
+const redo = () => {
+    preview.style.display = 'none';
+    snapButton.style.display = 'block';
+};
+
+const save = () => {};
+
 const initControls = () => {
     const rColorInput = document.querySelector('#r-color');
     const gColorInput = document.querySelector('#g-color');
@@ -60,6 +119,10 @@ const initControls = () => {
     const rRangeInput = document.querySelector('#r-range');
     const gRangeInput = document.querySelector('#g-range');
     const bRangeInput = document.querySelector('#b-range');
+    snapButton = document.querySelector('#snap');
+    redoButton = document.querySelector('#redo');
+    saveButton = document.querySelector('#save');
+    preview = document.getElementById('preview');
 
     rColor = Number.parseInt(rColorInput.value, 10);
     gColor = Number.parseInt(gColorInput.value, 10);
@@ -77,8 +140,9 @@ const initControls = () => {
     gRangeInput.addEventListener('change', (e) => rangeChange(e, 'g'));
     bRangeInput.addEventListener('change', (e) => rangeChange(e, 'b'));
 
-    document.getElementById('width').innerText = clientWidth;
-    document.getElementById('height').innerText = clientHeight;
+    snapButton.addEventListener('click', snap);
+    redoButton.addEventListener('click', redo);
+    saveButton.addEventListener('click', save);
 
     // document.getElementById('fullscreen').addEventListener('click', () => {
     //     const elem = document.documentElement;
@@ -105,25 +169,20 @@ const refreshColorSampler = () => {
 };
 
 const createNewCanvas = () => {
-    outputCanvas = document.createElement('canvas');
-    outputCanvas.id = 'output-canvas';
-    const holder = document.getElementById('canvas-holder');
-    outputCanvas.width = clientWidth;
-    outputCanvas.height = clientHeight;
-    outputCanvas.style.width = `${clientWidth}px`;
-    outputCanvas.style.height = `${clientHeight}px`;
-    holder.appendChild(outputCanvas);
+    outputCanvas = document.getElementById('output-canvas');
     outputContext = outputCanvas.getContext('2d');
 };
 
 const createTmpCanvas = () => {
-    // tmpCanvas = document.createElement('canvas');
-    tmpCanvas = new OffscreenCanvas(window.innerWidth, window.innerHeight);
-    tmpContext = tmpCanvas.getContext('2d');
+    tmpCanvas = document.createElement('canvas');
+    tmpContext = tmpCanvas.getContext('2d', {
+        willReadFrequently: true,
+    });
 };
 
 const isWithinBackgroundRectangle = (x, y) => {
-    return true;
+    // return true;
+    return x > 50 && x < 870 && y > 120 && y < 400;
 };
 
 const hasRequiredColor = (r, g, b) =>
@@ -168,8 +227,8 @@ const variantB = () => {
         // let { width: videoWidth, height: videoHeight } = stream
         const settings = stream.getTracks()[0].getSettings();
         console.log(settings);
-        const videoWidth = settings.width;
-        const videoHeight = settings.height;
+        videoWidth = settings.width;
+        videoHeight = settings.height;
 
         clientWidth = window.innerWidth;
         clientHeight = window.innerHeight;
@@ -201,38 +260,46 @@ const variantB = () => {
             .getElementsByTagName('video')[0]
             .getBoundingClientRect();
 
-        if (isPortrait) {
-            const margin = Number.parseInt(
-                (clientWidth - Number.parseInt(boundingRect.width, 10)) / 2,
-                10
-            );
-            video.style.marginLeft = `${margin}px`;
-            outputCanvas.style.marginLeft = `${margin}px`;
-        } else {
-            const margin = Number.parseInt(
-                (clientHeight - Number.parseInt(boundingRect.height, 10)) / 2,
-                10
-            );
-            video.style.marginTop = `${margin}px`;
-            outputCanvas.style.marginTop = `${margin}px`;
-        }
+        const uiPadding = `calc(2rem + ${boundingRect.height}px + 2rem)`;
+        document.getElementById('ui').style.marginTop = uiPadding;
+
+        // if (isPortrait) {
+        //     const margin = Number.parseInt(
+        //         (clientWidth - Number.parseInt(boundingRect.width, 10)) / 2,
+        //         10
+        //     );
+        //     video.style.marginLeft = `${margin}px`;
+        //     outputCanvas.style.marginLeft = `${margin}px`;
+        // } else {
+        //     const margin = Number.parseInt(
+        //         (clientHeight - Number.parseInt(boundingRect.height, 10)) / 2,
+        //         10
+        //     );
+        //     video.style.marginTop = `${margin}px`;
+        //     outputCanvas.style.marginTop = `${margin}px`;
+        // }
 
         // const img =
 
         const imgCanvas = document.createElement('canvas');
-        imgCanvas.width = 1700;
-        imgCanvas.height = 620;
+        imgCanvas.width = backdropWidth;
+        imgCanvas.height = backdropHeight;
         const imgContext = imgCanvas.getContext('2d');
 
         const image = new Image();
         image.src = '../img/yolo-wide.png';
+        // image.src = '../img/karton.png';
 
         let imageData;
 
         image.onload = () => {
-            imgContext.drawImage(image, 0, 0, 1700, 620);
-            imageData = imgContext.getImageData(0, 0, 1700, 620);
-            // document.getElementById('test').appendChild(imgCanvas);
+            imgContext.drawImage(image, 0, 0, backdropWidth, backdropHeight);
+            imageData = imgContext.getImageData(
+                0,
+                0,
+                backdropWidth,
+                backdropHeight
+            );
         };
 
         let topLeftX = 0,
@@ -245,82 +312,16 @@ const variantB = () => {
             bottomRightY = 0;
 
         const updateCanvas = () => {
-            const updateCorners = (x, y) => {
-                if (!topLeftX || x < topLeftX) {
-                    topLeftX = x;
-                }
-                if (!topLeftY || y < topLeftY) {
-                    topLeftY = y;
-                }
-
-                if (!topRightX || x > topRightX) {
-                    topRightX = x;
-                }
-
-                if (!topRightY || y < topRightY) {
-                    topRightY = y;
-                }
-
-                if (!bottomLeftX || x < bottomLeftX) {
-                    bottomLeftX = x;
-                }
-                if (!bottomLeftY || y > bottomLeftY) {
-                    bottomLeftY = y;
-                }
-
-                if (!bottomRightX || x > bottomRightX) {
-                    bottomRightX = x;
-                }
-
-                if (!bottomRightY || y > bottomRightY) {
-                    bottomRightY = y;
-                }
-
-                // console.log(width, height);
-
-                // console.log(
-                //     topLeftX,
-                //     topLeftY,
-                //     topRightX,
-                //     topRightY,
-                //     bottomLeftX,
-                //     bottomLeftY,
-                //     bottomRightX,
-                //     bottomRightY
-                // );
+            const updateCorners = (minX, minY, maxX, maxY) => {
+                topLeftX = minX;
+                topLeftY = minY;
+                topRightX = maxX;
+                topRightY = maxY;
+                bottomLeftX = minX;
+                bottomLeftY = maxY;
+                bottomRightX = maxX;
+                bottomRightY = maxY;
             };
-
-            const width = Number.parseInt(
-                (topRightX - topLeftX + (bottomRightX - bottomLeftX)) / 2,
-                10
-            );
-
-            const height = Number.parseInt(
-                (bottomLeftY - topLeftY + (bottomRightY - topRightY)) / 2,
-                10
-            );
-
-            // if (width && height) {
-            //     console.log(width, height);
-            //     // console.log(topLeftX, topLeftY);
-            //     imgContext.drawImage(
-            //         image,
-            //         0,
-            //         0,
-            //         1700,
-            //         620,
-            //         topLeftX,
-            //         topLeftY,
-            //         width,
-            //         height
-            //     );
-            //     imageData = imgContext.getImageData(
-            //         0,
-            //         0,
-            //         videoWidth,
-            //         videoHeight
-            //     );
-            // }
 
             tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
             let videoFrame = tmpContext.getImageData(
@@ -336,14 +337,12 @@ const variantB = () => {
             const frame = new ImageData(arr, videoWidth);
 
             outputContext.clearRect(0, 0, videoWidth, videoHeight);
-            topLeftX = 0;
-            topLeftY = 0;
-            topRightX = 0;
-            topRightY = 0;
-            bottomLeftX = 0;
-            bottomLeftY = 0;
-            bottomRightX = 0;
-            bottomRightY = 0;
+
+            let minX = Number.MAX_VALUE,
+                minY = Number.MAX_VALUE,
+                maxX = 0,
+                maxY = 0;
+
             for (let i = 0; i < videoFrame.data.length / 4; i++) {
                 let r = videoFrame.data[i * 4 + 0];
                 let g = videoFrame.data[i * 4 + 1];
@@ -361,32 +360,54 @@ const variantB = () => {
                     hasRequiredColor(r, g, b) &&
                     isWithinBackgroundRectangle(x, y)
                 ) {
-                    frame.data[i * 4 + 0] = 192;
-                    frame.data[i * 4 + 1] = 32;
-                    frame.data[i * 4 + 2] = 128;
-                    frame.data[i * 4 + 3] = 255;
+                    // frame.data[i * 4 + 0] = 192;
+                    // frame.data[i * 4 + 1] = 32;
+                    // frame.data[i * 4 + 2] = 128;
+                    // frame.data[i * 4 + 3] = 255;
 
-                    // const backdropPixels = imageData.data.length / 4;
-                    // const availableSpace = width * height;
-                    // const xOffsetOnScreen =
-                    //     x - Number.parseInt((topLeftX + bottomLeftX) / 2, 10);
-                    // const yOffsetOnScreen =
-                    //     y - Number.parseInt((bottomLeftY + topLeftY) / 2, 10);
-                    // xOffsetPercentage = width / xOffsetOnScreen;
-                    // yOffsetPercentage = width / yOffsetOnScreen;
+                    const cutoffWidth = bottomRightX - topLeftX;
+                    const cutoffHeight = bottomRightY - topLeftY;
 
-                    // 17000 * 6200 * 4
+                    const xPct = (x - topLeftX) / cutoffWidth;
+                    const yPct = (y - topLeftY) / cutoffHeight;
 
-                    // const indexInBackdrop = ???
+                    const xCoordInPicture = Number.parseInt(
+                        backdropWidth * xPct,
+                        10
+                    );
+                    const yCoordInPicture = Number.parseInt(
+                        backdropHeight * yPct,
+                        10
+                    );
 
+                    const pictIndex =
+                        yCoordInPicture * backdropWidth + xCoordInPicture;
 
-                    // frame.data[i * 4 + 0] = imageData.data[i * 4 + 0];
-                    // frame.data[i * 4 + 1] = imageData.data[i * 4 + 1];
-                    // frame.data[i * 4 + 2] = imageData.data[i * 4 + 2];
-                    // frame.data[i * 4 + 3] = imageData.data[i * 4 + 3];
-                    updateCorners(x, y);
+                    frame.data[i * 4 + 0] = imageData.data[pictIndex * 4 + 0];
+                    frame.data[i * 4 + 1] = imageData.data[pictIndex * 4 + 1];
+                    frame.data[i * 4 + 2] = imageData.data[pictIndex * 4 + 2];
+                    frame.data[i * 4 + 3] = imageData.data[pictIndex * 4 + 3];
+
+                    if (y === 260 && x === 507 && !!xPct && !!yPct) {
+                        // debugger;
+                    }
+
+                    if (!y || y < minY) {
+                        minY = y;
+                    }
+                    if (!x || x < minX) {
+                        minX = x;
+                    }
+                    if (y > maxY) {
+                        maxY = y;
+                    }
+                    if (x > maxX) {
+                        maxX = x;
+                    }
                 }
             }
+
+            updateCorners(minX, minY, maxX, maxY);
 
             outputContext.strokeStyle = '#FF0000';
             // outputContext.arc(topLeftX, topLeftY, 10, 2 * Math.PI, false);
@@ -399,6 +420,7 @@ const variantB = () => {
             //     2 * Math.PI,
             //     false
             // );
+            // lastFrame = frame;
             outputContext.putImageData(frame, 0, 0);
             outputContext.stroke();
             requestAnimationFrame(updateCanvas);

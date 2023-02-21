@@ -11,70 +11,62 @@
 <script src="../js/greenscreen.mjs" type="module"></script>
 <script src="../js/greenscreen-main.mjs" type="module"></script>
 
-<video playsinline autoplay id="video"></video>
-<div id="results">
-    <div id="test"></div>
-
-    <img src="../img/letsee.png"/>
-
-    <div>
-        
-        <div id="controls">
-            <span id="width"></span>
-            <span id="height"></span>
-            <span id="videowidth"></span>
-            <span id="videoheight"></span>
-            
-
-            <div style="display: flex; flex-direction: row; flex-wrap: wrap">
-                <div>
-                    <div>
-
-                        <input
-                            type="range"
-                            max="255"
-                            value="181"
-                            id="r-color"
-/>
-                        <label for="r-color">Red - </label>
-                        <label id="r-value">153</label>
-                    </div>
-                    <div>
-                        <input type="range" max="255" value="99" id="g-color"/>
-                        <label for="g-color">Green - </label>
-                        <label id="g-value">84</label>
-                    </div>
-                    <div>
-                        <input type="range" max="255" value="70" id="b-color"/>
-                        <label for="b-color">Blue - </label>
-                        <label id="b-value">51</label>
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        <input type="range" max="255" value="30" id="r-range"/>
-                        <label for="r-range">Red range - </label>
-                        <label id="r-range-value">37</label>
-                    </div>
-                    <div>
-                        <input type="range" max="255" value="25" id="g-range"/>
-                        <label for="g-color">Green range - </label>
-                        <label id="g-range-value">32</label>
-                    </div>
-                    <div>
-                        <input type="range" max="255" value="25" id="b-range"/>
-                        <label for="b-color">Blue range - </label>
-                        <label id="b-range-value">44</label>
-                    </div>
-                </div>
-            </div>
-            <div id="color-sample"/>
-        </div>
+<div id="wrapper">
+    <video playsinline autoplay id="video"></video>
+    <canvas id="output-canvas"></canvas>
+    <div id="ui">
+        <button id="snap">Snap!</button>
+        <button id="redo">Redo</button>
+        <button id="save">Save</button>
     </div>
 
-    <div id="canvas-holder"></div>
-    <img src="" width="640" height="480" id=""/>
+    <img id="preview" />
 </div>
 
-<link rel="stylesheet" href="../css/greenscreen.css"/>
+<div id="controls">
+    <span id="width"></span>
+    <span id="height"></span>
+    <span id="videowidth"></span>
+    <span id="videoheight"></span>
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+        <div>
+            <div>
+                <input type="range" max="255" value="190" id="r-color" />
+                <label for="r-color">Red - </label>
+                <label id="r-value">190</label>
+            </div>
+            <div>
+                <input type="range" max="255" value="103" id="g-color" />
+                <label for="g-color">Green - </label>
+                <label id="g-value">103</label>
+            </div>
+            <div>
+                <input type="range" max="255" value="78" id="b-color" />
+                <label for="b-color">Blue - </label>
+                <label id="b-value">78</label>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <input type="range" max="255" value="60" id="r-range" />
+                <label for="r-range">Red range - </label>
+                <label id="r-range-value">60</label>
+            </div>
+            <div>
+                <input type="range" max="255" value="40" id="g-range" />
+                <label for="g-color">Green range - </label>
+                <label id="g-range-value">40</label>
+            </div>
+            <div>
+                <input type="range" max="255" value="46" id="b-range" />
+                <label for="b-color">Blue range - </label>
+                <label id="b-range-value">46</label>
+            </div>
+        </div>
+    </div>
+    <div id="color-sample"></div>
+</div>
+
+<link rel="stylesheet" href="../css/greenscreen.css" />
