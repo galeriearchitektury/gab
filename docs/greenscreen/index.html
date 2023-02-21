@@ -12,17 +12,18 @@
 <script src="../js/greenscreen-main.mjs" type="module"></script>
 
 <div id="wrapper">
-    <video playsinline autoplay id="video"></video>
-    <canvas id="output-canvas"></canvas>
+    <div id="content">
+        <video playsinline autoplay id="video"></video>
+        <canvas id="output-canvas"></canvas>
+        <!-- <div id="preview-bcg"></div> -->
+        <span id="spinner">Photo is being loaded</span>
+        <img id="preview" />
+    </div>
     <div id="ui">
         <button id="snap">Snap!</button>
         <button id="redo" disabled>Redo</button>
         <button id="save" disabled>Save</button>
     </div>
-
-    <img id="preview" />
-    <span id="spinner">Photo is being loaded</span>
-    <div id="preview-bcg"></div>
 </div>
 
 <div id="controls">

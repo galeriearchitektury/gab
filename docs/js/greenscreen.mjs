@@ -23,7 +23,8 @@ let outputCanvas,
     tmpCanvas,
     tmpContext,
     preview,
-    previewBcg,
+    fileToSave,
+    // previewBcg,
     spinner,
     fullscreen = false,
     pictureIsLoading = false;
@@ -70,7 +71,7 @@ const logSettings = () => {
     console.log(rRange, gRange, bRange);
 };
 
-const combineVideoAndCanvas = () => {
+const combineVideoAndCanvas = async () => {
     const thirdCanvas = document.createElement('canvas');
     const thirdContext = thirdCanvas.getContext('2d');
     thirdCanvas.width = videoWidth;
@@ -95,32 +96,50 @@ const combineVideoAndCanvas = () => {
             finalFrame.data[i * 4 + 3] = videoFrame.data[i * 4 + 3];
         }
     }
+
     thirdContext.putImageData(finalFrame, 0, 0);
-    return thirdCanvas.toDataURL();
+    const base = thirdCanvas.toDataURL();
+    preview.src = base;
+
+    const fetched = await fetch(preview.src);
+    const blob = await fetched.blob();
+    saveButton.disabled = false;
+    fileToSave = new File([blob], `${new Date().getTime()}.png`, {
+        type: 'image/jpeg',
+    });
+
+    return base;
 };
 
 const snap = () => {
-    pictureIsLoading = true;
-    snapButton.disabled = !snapButton.disabled;
     spinner.style.display = 'block';
-    previewBcg.style.display = 'block';
-    preview.src = combineVideoAndCanvas();
-    pictureIsLoading = false;
-    redoButton.disabled = !redoButton.disabled;
-    saveButton.disabled = !saveButton.disabled;
     preview.style.display = 'block';
-    spinner.style.display = 'none';
+    outputCanvas.style.display = 'none';
+    video.style.display = 'none';
+    snapButton.disabled = true;
+    redoButton.disabled = false;
+    (async () => await combineVideoAndCanvas())();
 };
 
 const redo = () => {
-    previewBcg.style.display = 'none';
-    snapButton.disabled = !snapButton.disabled;
     preview.style.display = 'none';
-    redoButton.disabled = !redoButton.disabled;
-    saveButton.disabled = !saveButton.disabled;
+    video.style.display = 'block';
+    outputCanvas.style.display = 'block';
+    snapButton.disabled = false;
+    redoButton.disabled = true;
+    saveButton.disabled = true;
 };
 
-const save = () => {};
+const save = async () => {
+    const filesArray = [fileToSave];
+    if (navigator.share && navigator.canShare({ files: filesArray })) {
+        navigator.share({
+            title: 'Koláž z výstavy',
+            text: 'Posílám koláž vytvořenou v rámci výstava Eurotopia',
+            files: filesArray,
+        });
+    }
+};
 
 const initControls = () => {
     const rColorInput = document.querySelector('#r-color');
@@ -133,7 +152,7 @@ const initControls = () => {
     redoButton = document.querySelector('#redo');
     saveButton = document.querySelector('#save');
     preview = document.getElementById('preview');
-    previewBcg = document.getElementById('preview-bcg');
+    // previewBcg = document.getElementById('preview-bcg');
     spinner = document.getElementById('spinner');
 
     rColor = Number.parseInt(rColorInput.value, 10);
@@ -257,13 +276,15 @@ const variantB = () => {
         outputCanvas.height = videoHeight;
         tmpCanvas.width = videoWidth;
         tmpCanvas.height = videoHeight;
-        // preview.style.width = `calc(${videoWidth}px - 2rem})`;
-        // preview.style.height = auto;
+        preview.width = videoWidth;
+        preview.height = videoHeight;
 
         video.style.transform = `scale(${factor})`;
         video.style.transformOrigin = '0 0';
         outputCanvas.style.transform = `scale(${factor})`;
         outputCanvas.style.transformOrigin = '0 0';
+        preview.style.transform = `scale(${factor})`;
+        preview.style.transformOrigin = '0 0';
 
         const boundingRect = document
             .getElementsByTagName('video')[0]

@@ -34,11 +34,12 @@ input {
 }
 
 video,
-canvas {
-    position: absolute;
+canvas,
+#preview {
+    position: fixed;
     top: 0;
     left: 0;
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
 }
 
 canvas {
@@ -51,13 +52,13 @@ label {
     position: relative;
 }
 
-button {
+/* button {
     z-index: 4;
     font-size: 2rem;
     position: absolute;
     bottom: 2rem;
     left: 2rem;
-}
+} */
 
 input[type='range'] {
     -webkit-appearance: none;
@@ -92,55 +93,44 @@ label {
     border-radius: 0.5rem;
 }
 
-#redo {
-    margin-left: 20rem;
-}
-
-#save {
-    margin-left: 40rem;
-}
-
-#preview-bcg {
-    position: absolute;
-    z-index: 5;
-    background-color: black;
-    width: 100vw;
-    height: 100vh;
-    display: none;
-    top: 0;
-}
-
-#preview {
-    display: none;
-    position: absolute;
-    top: 1rem;
-    /* left: 2rem; */
-    transform: scale(0.9);
-    border: 2px solid black;
-    border-radius: 0.5rem;
-    z-index: 6;
-}
-
-#spinner {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: white;
-    z-index: 7;
-    font-size: 1.5rem;
-}
-
-#ui {
-    position: absolute;
-    bottom: 1rem;
-    margin-left: 1rem;
-    z-index: 10;
+#content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
 }
 
 button {
     width: 18rem;
     height: 5rem;
     border-radius: 0.5rem;
-    z-index: 6;
+}
+
+#wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+}
+
+#ui {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+#preview {
+    display: none;
+}
+
+#spinner {
+    display: none;
+    color: white;
+    align-self: center;
+    justify-self: center;
+}
+
+button,
+#spinner {
+    font-size: 2rem;
 }
