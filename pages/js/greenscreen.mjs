@@ -15,7 +15,10 @@ let rColor,
     bRange,
     snapButton,
     redoButton,
-    saveButton;
+    saveButton,
+    arButton,
+    nextButton,
+    controlsButton;
 let clientWidth, clientHeight, videoWidth, videoHeight;
 let outputCanvas,
     outputContext,
@@ -24,14 +27,17 @@ let outputCanvas,
     tmpContext,
     preview,
     fileToSave,
+    image,
     // previewBcg,
     spinner,
     fullscreen = false,
     pictureIsLoading = false;
 
 // wide
-let backdropWidth = 1700;
-let backdropHeight = 620;
+// let backdropWidth = 1700;
+// let backdropHeight = 620;
+let backdropWidth = 630;
+let backdropHeight = 450;
 
 // cardboard
 // let backdropWidth = 410;
@@ -138,6 +144,26 @@ const save = async () => {
     }
 };
 
+const toggleAr = () => {
+    outputCanvas.style.display === 'block'
+        ? (outputCanvas.style.display = 'none')
+        : (outputCanvas.style.display = 'block');
+};
+
+let nextCount = 0;
+const next = () => {
+    nextCount++;
+    // image.src = '../img/eurotopia-demo-next-plakat.png';
+    // image.src = `../img/eurotopia-cta-${nextCount}.png`;
+    image.src = `/img/eurotopia-cta-${nextCount}.png`;
+};
+
+const toggleControls = () => {
+    controls.style.display === 'flex'
+        ? (controls.style.display = 'none')
+        : (controls.style.display = 'flex');
+};
+
 const initControls = () => {
     const rColorInput = document.querySelector('#r-color');
     const gColorInput = document.querySelector('#g-color');
@@ -148,6 +174,9 @@ const initControls = () => {
     snapButton = document.querySelector('#snap');
     redoButton = document.querySelector('#redo');
     saveButton = document.querySelector('#save');
+    arButton = document.querySelector('#ar');
+    nextButton = document.querySelector('#next');
+    controlsButton = document.querySelector('#controlsBtn');
     preview = document.getElementById('preview');
     // previewBcg = document.getElementById('preview-bcg');
     spinner = document.getElementById('spinner');
@@ -173,6 +202,9 @@ const initControls = () => {
     });
     redoButton.addEventListener('click', redo);
     saveButton.addEventListener('click', save);
+    arButton.addEventListener('click', toggleAr);
+    nextButton.addEventListener('click', next);
+    controlsButton.addEventListener('click', toggleControls);
 
     // document.getElementById('fullscreen').addEventListener('click', () => {
     //     const elem = document.documentElement;
@@ -285,8 +317,10 @@ const variantB = () => {
         imgCanvas.height = backdropHeight;
         const imgContext = imgCanvas.getContext('2d');
 
-        const image = new Image();
+        image = new Image();
         image.src = '../img/yolo-wide.png';
+        image.src = '../img/eurotopia-demo.png';
+        // image.src = '../img/eurotopia-demo-next.png';
         // image.src = '../img/karton.png';
 
         let imageData;
