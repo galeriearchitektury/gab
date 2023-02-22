@@ -210,19 +210,6 @@ const createTmpCanvas = () => {
     });
 };
 
-const isWithinBackgroundRectangle = (x, y) => {
-    return true;
-    // return x > 50 && x < 870 && y > 120 && y < 400;
-};
-
-const hasRequiredColor = (r, g, b) =>
-    r > rColor - rRange &&
-    r < rColor + rRange &&
-    g > gColor - gRange &&
-    g < gColor + gRange &&
-    b > bColor - bRange &&
-    b < bColor + bRange;
-
 const variantB = () => {
     initControls();
     createTmpCanvas();
@@ -323,18 +310,42 @@ const variantB = () => {
             bottomRightX = 0,
             bottomRightY = 0;
 
-        const updateCanvas = () => {
-            const updateCorners = (minX, minY, maxX, maxY) => {
-                topLeftX = minX;
-                topLeftY = minY;
-                topRightX = maxX;
-                topRightY = maxY;
-                bottomLeftX = minX;
-                bottomLeftY = maxY;
-                bottomRightX = maxX;
-                bottomRightY = maxY;
-            };
+        const updateCorners = (minX, minY, maxX, maxY) => {
+            topLeftX = minX;
+            topLeftY = minY;
+            topRightX = maxX;
+            topRightY = maxY;
+            bottomLeftX = minX;
+            bottomLeftY = maxY;
+            bottomRightX = maxX;
+            bottomRightY = maxY;
+        };
 
+        // const frameWorker = new Worker('../js/frame-worker.js');
+
+        // frameWorker.addEventListener('message', (event) => {
+        //     const { minY, minX, maxY, maxX, frame } = event.data;
+        //     // console.log(event);
+
+        // });
+
+        const isWithinBackgroundRectangle = (x, y) => {
+            return true;
+            // return x > 50 && x < 870 && y > 120 && y < 400;
+        };
+
+        const hasRequiredColor = (r, g, b) =>
+            r > rColor - rRange &&
+            r < rColor + rRange &&
+            g > gColor - gRange &&
+            g < gColor + gRange &&
+            b > bColor - bRange &&
+            b < bColor + bRange;
+
+        const arr = new Uint8ClampedArray(videoHeight * videoWidth * 4);
+        let frame = new ImageData(arr, videoWidth);
+
+        const updateCanvas = () => {
             tmpContext.drawImage(video, 0, 0, videoWidth, videoHeight);
             let videoFrame = tmpContext.getImageData(
                 0,
@@ -343,99 +354,79 @@ const variantB = () => {
                 videoHeight
             );
 
-            const arr = new Uint8ClampedArray(videoHeight * videoWidth * 4);
             arr.fill(0, 0, arr.length - 1);
 
-            const frame = new ImageData(arr, videoWidth);
-
-            outputContext.clearRect(0, 0, videoWidth, videoHeight);
+            frame = new ImageData(arr, videoWidth);
 
             let minX = Number.MAX_VALUE,
                 minY = Number.MAX_VALUE,
                 maxX = 0,
                 maxY = 0;
+            const width = videoWidth;
 
-            for (let i = 0; i < videoFrame.data.length / 4; i++) {
-                let r = videoFrame.data[i * 4 + 0];
-                let g = videoFrame.data[i * 4 + 1];
-                let b = videoFrame.data[i * 4 + 2];
+            const cutoffWidth = bottomRightX - topLeftX;
+            const cutoffHeight = bottomRightY - topLeftY;
 
-                // weird
-                const width = videoWidth;
-                const height = videoHeight;
+            if (imageData?.data) {
+                for (let i = 0; i < videoFrame.data.length / 4; i++) {
+                    let r = videoFrame.data[i * 4 + 0];
+                    let g = videoFrame.data[i * 4 + 1];
+                    let b = videoFrame.data[i * 4 + 2];
 
-                const x = Math.floor(i % width);
-                const y = Math.floor(i / width);
+                    const x = Math.floor(i % width);
+                    const y = Math.floor(i / width);
 
-                if (
-                    imageData?.data &&
-                    hasRequiredColor(r, g, b) &&
-                    isWithinBackgroundRectangle(x, y)
-                ) {
-                    const cutoffWidth = bottomRightX - topLeftX;
-                    const cutoffHeight = bottomRightY - topLeftY;
+                    if (
+                        hasRequiredColor(r, g, b) &&
+                        isWithinBackgroundRectangle(x, y)
+                    ) {
+                        const xPct = (x - topLeftX) / cutoffWidth;
+                        const yPct = (y - topLeftY) / cutoffHeight;
 
-                    const xPct = (x - topLeftX) / cutoffWidth;
-                    const yPct = (y - topLeftY) / cutoffHeight;
+                        const xCoordInPicture = Number.parseInt(
+                            backdropWidth * xPct,
+                            10
+                        );
+                        const yCoordInPicture = Number.parseInt(
+                            backdropHeight * yPct,
+                            10
+                        );
 
-                    const xCoordInPicture = Number.parseInt(
-                        backdropWidth * xPct,
-                        10
-                    );
-                    const yCoordInPicture = Number.parseInt(
-                        backdropHeight * yPct,
-                        10
-                    );
+                        const pictIndex =
+                            yCoordInPicture * backdropWidth + xCoordInPicture;
 
-                    const pictIndex =
-                        yCoordInPicture * backdropWidth + xCoordInPicture;
+                        frame.data[i * 4 + 0] =
+                            imageData.data[pictIndex * 4 + 0];
+                        frame.data[i * 4 + 1] =
+                            imageData.data[pictIndex * 4 + 1];
+                        frame.data[i * 4 + 2] =
+                            imageData.data[pictIndex * 4 + 2];
+                        frame.data[i * 4 + 3] =
+                            imageData.data[pictIndex * 4 + 3];
 
-                    frame.data[i * 4 + 0] = imageData.data[pictIndex * 4 + 0];
-                    frame.data[i * 4 + 1] = imageData.data[pictIndex * 4 + 1];
-                    frame.data[i * 4 + 2] = imageData.data[pictIndex * 4 + 2];
-                    frame.data[i * 4 + 3] = imageData.data[pictIndex * 4 + 3];
+                        // if (y === 260 && x === 507 && !!xPct && !!yPct) {
+                        //     // debugger;
+                        // }
 
-                    if (y === 260 && x === 507 && !!xPct && !!yPct) {
-                        // debugger;
-                    }
-
-                    const isMinY = (y, minY) => {
-                        let someIsOutOfRange = false;
-                        // todo to (re)think?
-
-                        //     for (let index = 0; index < 10; index++) {
-                        //         const nuIndex = i + width * 4;
-
-                        //         const nuR = videoFrame.data[nuIndex * 4 + 0];
-                        //         const nuG = videoFrame.data[nuIndex * 4 + 1];
-                        //         const nuB = videoFrame.data[nuIndex * 4 + 2];
-
-                        //         if (!hasRequiredColor(nuR, nuG, nuB)) {
-                        //             someIsOutOfRange = true;
-                        //         }
-                        //     }
-
-                        return (!y || y < minY) && !someIsOutOfRange;
-                    };
-
-                    if (isMinY(y, minY, videoFrame, i)) {
-                        minY = y;
-                    }
-                    if (!x || x < minX) {
-                        minX = x;
-                    }
-                    if (y > maxY) {
-                        maxY = y;
-                    }
-                    if (x > maxX) {
-                        maxX = x;
+                        if (!y || y < minY) {
+                            minY = y;
+                        }
+                        if (!x || x < minX) {
+                            minX = x;
+                        }
+                        if (y > maxY) {
+                            maxY = y;
+                        }
+                        if (x > maxX) {
+                            maxX = x;
+                        }
                     }
                 }
             }
 
             updateCorners(minX, minY, maxX, maxY);
 
-            outputContext.strokeStyle = '#FF0000';
+            // outputContext.strokeStyle = '#FF0000';
             // outputContext.arc(topLeftX, topLeftY, 10, 2 * Math.PI, false);
             // outputContext.arc(topRightX, topRightY, 10, 2 * Math.PI, false);
             // outputContext.arc(bottomLeftX, bottomLeftY, 10, 2 * Math.PI, false);
