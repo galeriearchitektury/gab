@@ -131,7 +131,7 @@ footer {
     gap: 0.5rem;
 }
 
-footer a {
+footer a, footer span {
     font-size: 0.75rem;
     text-decoration: none;
     color: var(--dark-color);
@@ -183,7 +183,7 @@ footer a {
     }
 }
 
-footer a {
+footer a, footer span {
     font-size: 1rem;
 }
 
@@ -195,6 +195,10 @@ address {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+h4 {
+    margin-bottom: .5rem;
 }
 
 .opencall li {
