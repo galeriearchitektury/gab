@@ -28,6 +28,8 @@ let outputCanvas,
     preview,
     fileToSave,
     image,
+    blob,
+    fileName,
     // previewBcg,
     spinner,
     fullscreen = false,
@@ -114,9 +116,10 @@ const snap = async () => {
         const base = thirdCanvas.toDataURL();
         preview.src = base;
 
-        const blob = b64toBlob(base);
+        blob = b64toBlob(base);
 
-        fileToSave = new File([blob], `${new Date().getTime()}.png`, {
+        fileName = `${new Date().getTime()}.png`;
+        fileToSave = new File([blob], fileName, {
             type: 'image/png',
         });
         saveButton.disabled = false;
@@ -133,7 +136,7 @@ const redo = () => {
     saveButton.disabled = true;
 };
 
-const save = async () => {
+const shareASnap = async () => {
     const filesArray = [fileToSave];
     if (navigator.share && navigator.canShare({ files: filesArray })) {
         navigator.share({
@@ -142,6 +145,29 @@ const save = async () => {
             files: filesArray,
         });
     }
+};
+
+const saveASnapLocally = async () => {
+    const blobURL = URL.createObjectURL(blob);
+    // Create the `<a download>` element and append it invisibly.
+    const a = document.createElement('a');
+    a.href = blobURL;
+    a.download = fileName;
+    a.style.display = 'none';
+    document.body.append(a);
+    // Programmatically click the element.
+    a.click();
+    shareASnap();
+    // Revoke the blob URL and remove the element.
+    // setTimeout(() => {
+    //     URL.revokeObjectURL(blobURL);
+    //     a.remove();
+    // }, 1000);
+};
+
+const save = () => {
+    shareASnap();
+    saveASnapLocally();
 };
 
 const toggleAr = () => {
