@@ -157,7 +157,7 @@ const saveASnapLocally = async () => {
     document.body.append(a);
     // Programmatically click the element.
     a.click();
-    shareASnap();
+    // shareASnap();
     // Revoke the blob URL and remove the element.
     // setTimeout(() => {
     //     URL.revokeObjectURL(blobURL);
