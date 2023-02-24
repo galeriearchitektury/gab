@@ -10,7 +10,7 @@
 }
 
 body {
-    overflow: hidden;
+    /* overflow: hidden; */
     background: black;
 }
 
@@ -134,4 +134,14 @@ button {
 button,
 #spinner {
     font-size: 2rem;
+}
+
+#gallery-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: visible;
+}
+
+#gallery-wrapper img {
+    max-width: 40rem;
 }

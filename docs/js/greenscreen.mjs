@@ -30,6 +30,7 @@ let outputCanvas,
     image,
     blob,
     fileName,
+    base64,
     // previewBcg,
     spinner,
     fullscreen = false,
@@ -113,10 +114,10 @@ const snap = async () => {
         const processedFrame = event.data;
 
         thirdContext.putImageData(processedFrame, 0, 0);
-        const base = thirdCanvas.toDataURL();
-        preview.src = base;
+        base64 = thirdCanvas.toDataURL();
+        preview.src = base64;
 
-        blob = b64toBlob(base);
+        blob = b64toBlob(base64);
 
         fileName = `${new Date().getTime()}.png`;
         fileToSave = new File([blob], fileName, {
@@ -147,27 +148,43 @@ const shareASnap = async () => {
     }
 };
 
-const saveASnapLocally = async () => {
-    const blobURL = URL.createObjectURL(blob);
-    // Create the `<a download>` element and append it invisibly.
-    const a = document.createElement('a');
-    a.href = blobURL;
-    a.download = fileName;
-    a.style.display = 'none';
-    document.body.append(a);
-    // Programmatically click the element.
-    a.click();
-    // shareASnap();
-    // Revoke the blob URL and remove the element.
-    // setTimeout(() => {
-    //     URL.revokeObjectURL(blobURL);
-    //     a.remove();
-    // }, 1000);
+const saveASnapToGithub = async () => {
+    const token = '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';
+    const data = JSON.stringify({
+        message: 'snap_file',
+        content: base64.replace('data:image/png;base64,', ''),
+    });
+
+    fileName = `${new Date().getTime()}.png`;
+
+    await fetch(
+        `https://api.github.com/repos/galeriearchitektury/gab/contents/docs/img/eurotopia/ar/${fileName}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        }
+    );
+
+    await fetch(
+        `https://api.github.com/repos/galeriearchitektury/gab/contents/pages/img/eurotopia/ar/${fileName}`,
+        {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        }
+    );
 };
 
 const save = () => {
     shareASnap();
-    saveASnapLocally();
+    saveASnapToGithub();
 };
 
 const toggleAr = () => {
