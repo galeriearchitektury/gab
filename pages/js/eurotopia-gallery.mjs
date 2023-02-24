@@ -1,4 +1,5 @@
-const token = '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';
+// https://medium.com/axlewebtech/upload-a-file-in-github-using-github-apis-dbb6f38cc63
+const token = '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';
 
 const initGallery = async () => {
     const contents = await fetch(

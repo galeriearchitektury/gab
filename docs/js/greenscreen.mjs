@@ -149,7 +149,7 @@ const shareASnap = async () => {
 };
 
 const saveASnapToGithub = async () => {
-    const token = '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';
+    const token = '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';
     const data = JSON.stringify({
         message: 'snap_file',
         content: base64.replace('data:image/png;base64,', ''),
