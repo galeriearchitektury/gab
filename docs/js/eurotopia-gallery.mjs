@@ -1,5 +1,4 @@
 // https://medium.com/axlewebtech/upload-a-file-in-github-using-github-apis-dbb6f38cc63
-const token = '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';
 
 const initGallery = async () => {
     const contents = await fetch(
@@ -7,7 +6,7 @@ const initGallery = async () => {
         {
             method: 'GET',
             headers: {
-                Authorization: `token ${token}`,
+                Authorization: 'token ' + "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",
                 'Content-Type': 'application/json',
             },
         }

@@ -149,7 +149,6 @@ const shareASnap = async () => {
 };
 
 const saveASnapToGithub = async () => {
-    const token = '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';
     const data = JSON.stringify({
         message: 'snap_file',
         content: base64.replace('data:image/png;base64,', ''),
@@ -162,7 +161,7 @@ const saveASnapToGithub = async () => {
         {
             method: 'PUT',
             headers: {
-                Authorization: `token ${token}`,
+                Authorization: 'token ' + "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",
                 'Content-Type': 'application/json',
             },
             body: data,
@@ -174,7 +173,7 @@ const saveASnapToGithub = async () => {
         {
             method: 'PUT',
             headers: {
-                Authorization: `token ${token}`,
+                Authorization: 'token ' + "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",
                 'Content-Type': 'application/json',
             },
             body: data,
