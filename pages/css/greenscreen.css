@@ -153,13 +153,13 @@ button,
     background-color: white;
     margin: 1rem;
     /* border: 1px solid black; */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 .6rem 1rem rgba(0, 0, 0, 0.6);
 }
 
 .pic img {
-    max-width: 20rem;
-    max-height: 20rem;
+    /* max-width: 10rem; */
+    max-height: 25rem;
     /* height: auto; */
     margin: 1rem;
-    margin-bottom: 4rem;
+    /* margin-bottom: 6rem; */
 }

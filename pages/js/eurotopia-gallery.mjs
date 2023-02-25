@@ -33,14 +33,14 @@ const initGallery = async () => {
             const pic = document.createElement('div');
             pic.className = 'pic';
             const rotateRadom = Math.floor(Math.random() * 40) - 20;
-            const lRandom = Number.parseInt(Math.random() * 100, 10);
-            const rRandom = Number.parseInt(Math.random() * 100, 10);
-            pic.style.left = `calc(${lRandom}% - 30rem)`;
-            pic.style.top = `calc(${rRandom}% - 30rem)`;
+            const leftRandom = Number.parseInt(Math.random() * 100, 10);
+            const topRandom = Number.parseInt(Math.random() * 50, 10);
+            pic.style.left = `calc(calc(${leftRandom}% - 20rem) + 20rem)`;
+            pic.style.top = `calc(${topRandom}%)`;
             pic.style.transform = `rotateZ(${rotateRadom}deg)`;
             pic.style.zIndex = zIndexCounter;
             const image = document.createElement('img');
-            image.id = url
+            image.id = url;
             // image.addEventListener('load', (event, url) => {
             //     // console.log(event);
             //     const renderedImage = document.getElementById(url)
@@ -54,5 +54,5 @@ const initGallery = async () => {
 
 window.addEventListener('DOMContentLoaded', async (event) => {
     initGallery();
-    setInterval(async () => await initGallery(), 10000);
+    setInterval(async () => await initGallery(), 5000);
 });
