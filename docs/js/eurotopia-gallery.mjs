@@ -33,22 +33,19 @@ const initGallery = async () => {
             const pic = document.createElement('div');
             pic.className = 'pic';
             const rotateRadom = Math.floor(Math.random() * 40) - 20;
-            const leftRandom = Number.parseInt(Math.random() * 100, 10);
-            const topRandom = Number.parseInt(Math.random() * 50, 10);
-            pic.style.left = `calc(calc(${leftRandom}% - 20rem) + 20rem)`;
-            pic.style.top = `calc(${topRandom}%)`;
+            const leftRandom = Number.parseInt(Math.random() * 80, 10);
+            const topRandom = Number.parseInt(Math.random() * 70, 10);
+            pic.style.left = `calc(${leftRandom}%)`
+            pic.style.top = `calc(${topRandom}%)`
             pic.style.transform = `rotateZ(${rotateRadom}deg)`;
             pic.style.zIndex = zIndexCounter;
+            pic.style.animationName = 'glow';
+
             const image = document.createElement('img');
             image.id = url;
-            // image.addEventListener('load', (event, url) => {
-            //     // console.log(event);
-            //     const renderedImage = document.getElementById(url)
-            //     const isPortrait = renderedImage
-            // });
             image.src = url;
             pic.appendChild(image);
-            wrapper.insertBefore(pic, firstChild);
+            wrapper.insertBefore(pic, firstChild)
         });
 };
 

@@ -146,6 +146,15 @@ button,
     max-width: 40rem;
 }
 
+@keyframes glow {
+    0% {
+      box-shadow: 0 0 1rem 1rem rgba(255, 168, 0, .6);
+    }
+    100% {
+        box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
+    }
+  }
+
 .pic {
     /* width: 35vmin; */
     position: fixed;
@@ -153,7 +162,12 @@ button,
     background-color: white;
     margin: 1rem;
     /* border: 1px solid black; */
-    box-shadow: 0 0.6rem 1rem rgba(0, 0, 0, 0.6);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
+
+    /* transition: all 2s; */
+    animation-name: glow;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
 }
 
 .pic img {
