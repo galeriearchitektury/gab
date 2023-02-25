@@ -157,9 +157,9 @@ button,
 }
 
 .pic img {
-    max-width: 30vmin;
-    max-height: 30vmin;
+    max-width: 20rem;
+    max-height: 20rem;
     /* height: auto; */
-    margin: 2vmin;
-    margin-bottom: 8rem;
+    margin: 1rem;
+    margin-bottom: 4rem;
 }

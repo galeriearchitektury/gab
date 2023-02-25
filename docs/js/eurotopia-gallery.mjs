@@ -35,11 +35,17 @@ const initGallery = async () => {
             const rotateRadom = Math.floor(Math.random() * 40) - 20;
             const lRandom = Number.parseInt(Math.random() * 100, 10);
             const rRandom = Number.parseInt(Math.random() * 100, 10);
-            pic.style.left = `calc(${lRandom}% - 30vmin)`;
-            pic.style.top = `calc(${rRandom}% - 30vmin)`;
+            pic.style.left = `calc(${lRandom}% - 30rem)`;
+            pic.style.top = `calc(${rRandom}% - 30rem)`;
             pic.style.transform = `rotateZ(${rotateRadom}deg)`;
             pic.style.zIndex = zIndexCounter;
             const image = document.createElement('img');
+            image.id = url
+            // image.addEventListener('load', (event, url) => {
+            //     // console.log(event);
+            //     const renderedImage = document.getElementById(url)
+            //     const isPortrait = renderedImage
+            // });
             image.src = url;
             pic.appendChild(image);
             wrapper.insertBefore(pic, firstChild);
