@@ -145,3 +145,21 @@ button,
 #gallery-wrapper img {
     max-width: 40rem;
 }
+
+.pic {
+    /* width: 35vmin; */
+    position: fixed;
+    /* height: 42vmin; */
+    background-color: white;
+    margin: 1rem;
+    /* border: 1px solid black; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pic img {
+    max-width: 30vmin;
+    max-height: 30vmin;
+    /* height: auto; */
+    margin: 2vmin;
+    margin-bottom: 8rem;
+}
