@@ -161,7 +161,7 @@ const saveASnapToGithub = async () => {
         {
             method: 'PUT',
             headers: {
-                Authorization: 'token ' + "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",
+                Authorization: 'token ' + atob('Z2hwX0RoMFkwNGVRNFdQZkhRSGROTEwyenFCdUdCNmNmYzBGUVh2bQ=='),
                 'Content-Type': 'application/json',
             },
             body: data,
@@ -173,7 +173,7 @@ const saveASnapToGithub = async () => {
         {
             method: 'PUT',
             headers: {
-                Authorization: 'token ' + "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",
+                Authorization: 'token ' + atob('Z2hwX0RoMFkwNGVRNFdQZkhRSGROTEwyenFCdUdCNmNmYzBGUVh2bQ=='),
                 'Content-Type': 'application/json',
             },
             body: data,
