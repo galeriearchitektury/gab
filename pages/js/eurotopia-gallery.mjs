@@ -28,14 +28,11 @@ const initGallery = async () => {
             const image = document.createElement('img');
             image.src = url;
             const firstChild = wrapper.firstChild;
-            // if (!firstChild) {
-            //     wrapper.appendChild(image);
-            // } else {
-                wrapper.insertBefore(image,firstChild)
-            // }
+            wrapper.insertBefore(image, firstChild);
         });
 };
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    setInterval(initGallery, 10000);
+window.addEventListener('DOMContentLoaded', async (event) => {
+    initGallery();
+    setTimeout(initGallery, 10000);
 });
