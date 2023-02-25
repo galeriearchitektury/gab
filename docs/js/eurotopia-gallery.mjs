@@ -24,15 +24,15 @@ const initGallery = async () => {
     fetchedImages
         .filter((img) => !knownImages.includes(img))
         .forEach((url) => {
+            const firstChild = wrapper.firstChild;
             knownImages.unshift(url);
             const image = document.createElement('img');
             image.src = url;
-            const firstChild = wrapper.firstChild;
             wrapper.insertBefore(image, firstChild);
         });
 };
 
 window.addEventListener('DOMContentLoaded', async (event) => {
     initGallery();
-    setTimeout(initGallery, 10000);
+    setInterval(async () => await initGallery(), 10000);
 });
