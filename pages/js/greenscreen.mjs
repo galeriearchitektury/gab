@@ -18,6 +18,7 @@ let rColor,
     saveButton,
     arButton,
     nextButton,
+    previousButton,
     controlsButton;
 let clientWidth, clientHeight, videoWidth, videoHeight;
 let outputCanvas,
@@ -39,8 +40,8 @@ let outputCanvas,
 // wide
 // let backdropWidth = 1700;
 // let backdropHeight = 620;
-let backdropWidth = 630;
-let backdropHeight = 450;
+let backdropWidth = 3200;
+let backdropHeight = 2200;
 
 // cardboard
 // let backdropWidth = 410;
@@ -132,6 +133,8 @@ const redo = () => {
     preview.style.display = 'none';
     video.style.display = 'block';
     outputCanvas.style.display = 'block';
+    spinner.innerText = 'Photo is being processed';
+    preview.src = '';
     snapButton.disabled = false;
     redoButton.disabled = true;
     saveButton.disabled = true;
@@ -155,13 +158,17 @@ const saveASnapToGithub = async () => {
     });
 
     fileName = `${new Date().getTime()}.png`;
-
+    spinner.innerText = 'Sharing with Eurotopia crew';
     await fetch(
         `https://api.github.com/repos/galeriearchitektury/gab/contents/docs/img/eurotopia/ar/${fileName}`,
         {
             method: 'PUT',
             headers: {
-                Authorization: 'token ' + atob('Z2hwX0RoMFkwNGVRNFdQZkhRSGROTEwyenFCdUdCNmNmYzBGUVh2bQ=='),
+                Authorization:
+                    'token ' +
+                    atob(
+                        'Z2hwX0RoMFkwNGVRNFdQZkhRSGROTEwyenFCdUdCNmNmYzBGUVh2bQ=='
+                    ),
                 'Content-Type': 'application/json',
             },
             body: data,
@@ -173,12 +180,17 @@ const saveASnapToGithub = async () => {
         {
             method: 'PUT',
             headers: {
-                Authorization: 'token ' + atob('Z2hwX0RoMFkwNGVRNFdQZkhRSGROTEwyenFCdUdCNmNmYzBGUVh2bQ=='),
+                Authorization:
+                    'token ' +
+                    atob(
+                        'Z2hwX0RoMFkwNGVRNFdQZkhRSGROTEwyenFCdUdCNmNmYzBGUVh2bQ=='
+                    ),
                 'Content-Type': 'application/json',
             },
             body: data,
         }
     );
+    spinner.innerText = 'Shared with Eurotopia';
 };
 
 const save = () => {
@@ -192,12 +204,33 @@ const toggleAr = () => {
         : (outputCanvas.style.display = 'block');
 };
 
-let nextCount = 0;
+const backdropArray = [
+    '../img/eurotopia/backdrops/lime.png',
+    '../img/eurotopia/backdrops/fuchsia.png',
+    '../img/eurotopia/backdrops/iran.png',
+];
+
+let backdropIndex = 0;
 const next = () => {
-    nextCount++;
+    if (backdropIndex === backdropArray.length - 1) {
+        backdropIndex = 0;
+    } else {
+        backdropIndex++;
+    }
+    image.src = backdropArray[backdropIndex];
+    // nextCount++;
     // image.src = '../img/eurotopia-demo-next-plakat.png';
     // image.src = `../img/eurotopia-cta-${nextCount}.png`;
-    image.src = `/img/eurotopia-cta-${nextCount}.png`;
+    // image.src = `/img/eurotopia-cta-${nextCount}.png`;
+};
+
+const previous = () => {
+    if (backdropIndex === 0) {
+        backdropIndex = backdropArray.length - 1;
+    } else {
+        backdropIndex--;
+    }
+    image.src = backdropArray[backdropIndex];
 };
 
 const toggleControls = () => {
@@ -218,6 +251,7 @@ const initControls = () => {
     saveButton = document.querySelector('#save');
     arButton = document.querySelector('#ar');
     nextButton = document.querySelector('#next');
+    previousButton = document.querySelector('#previous');
     controlsButton = document.querySelector('#controlsBtn');
     preview = document.getElementById('preview');
     // previewBcg = document.getElementById('preview-bcg');
@@ -244,9 +278,10 @@ const initControls = () => {
     });
     redoButton.addEventListener('click', redo);
     saveButton.addEventListener('click', save);
-    arButton.addEventListener('click', toggleAr);
+    arButton?.addEventListener('click', toggleAr);
     nextButton.addEventListener('click', next);
-    controlsButton.addEventListener('click', toggleControls);
+    previousButton.addEventListener('click', previous);
+    controlsButton?.addEventListener('click', toggleControls);
 
     // document.getElementById('fullscreen').addEventListener('click', () => {
     //     const elem = document.documentElement;
@@ -360,8 +395,8 @@ const variantB = () => {
         const imgContext = imgCanvas.getContext('2d');
 
         image = new Image();
-        image.src = '../img/yolo-wide.png';
-        image.src = '../img/eurotopia-demo.png';
+        // image.src = '../img/yolo-wide.png';
+        image.src = backdropArray[0];
         // image.src = '../img/eurotopia-demo-next.png';
         // image.src = '../img/karton.png';
 

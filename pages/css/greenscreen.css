@@ -153,7 +153,7 @@ button,
     background-color: white;
     margin: 1rem;
     /* border: 1px solid black; */
-    box-shadow: 0 .6rem 1rem rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0.6rem 1rem rgba(0, 0, 0, 0.6);
 }
 
 .pic img {
@@ -162,4 +162,9 @@ button,
     /* height: auto; */
     margin: 1rem;
     /* margin-bottom: 6rem; */
+}
+
+#previous,
+#next {
+    font-size: 3rem;
 }
