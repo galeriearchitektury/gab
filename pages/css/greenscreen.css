@@ -20,12 +20,13 @@ button {
 }
 
 input {
-    width: 40vmin;
+    width: 80vmin;
     height: 10vmin;
 }
 
 #controls {
-    display: flex;
+    /* display: flex; */
+    display: none;
     gap: 1rem;
     flex-direction: column;
     position: absolute;

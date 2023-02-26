@@ -531,12 +531,17 @@ const variantB = () => {
                         if (!x || x < minX) {
                             minX = x;
                         }
-                        if (y > maxY) {
-                            maxY = y;
-                        }
                         if (x > maxX) {
                             maxX = x;
                         }
+
+                        const backdropRatio = 320 / 220
+                        const width = maxX - minX
+
+                        if (y > maxY) {
+                            maxY = (Number.parseInt(width / backdropRatio + minY, 10))
+                        }
+
                     }
                 }
             }
