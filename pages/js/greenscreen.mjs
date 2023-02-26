@@ -353,13 +353,19 @@ const variantB = () => {
         // let { width: videoWidth, height: videoHeight } = stream
         const settings = stream.getTracks()[0].getSettings();
         console.log(settings);
-        videoWidth = settings.width;
-        videoHeight = settings.height;
+        videoWidth = Math.min(settings.width, settings.height);
+        videoHeight = Math.max(settings.height, settings.width);
 
         clientWidth = window.innerWidth;
         clientHeight = window.innerHeight;
 
         let factor = 1;
+        // factor = Number.parseFloat( Math.min(videoWidth / clientWidth) / Math.max(videoWidth / clientWidth), 100) 
+        // videoWidth <= clientWidth
+        //     ? Number.parseFloat(videoWidth / Math.max(clientWidth, clientHeight), 100)
+        //     : Number.parseFloat(Math.max(clientWidth, clientHeight) / Math.max, 100);
+
+
         factor =
             videoWidth <= clientWidth
                 ? Number.parseFloat(videoWidth / clientWidth, 100)
