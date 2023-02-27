@@ -211,7 +211,10 @@ const backdropArray = [
     '../img/eurotopia/backdrops/ljm2.png',
     '../img/eurotopia/backdrops/iran.png',
     '../img/eurotopia/backdrops/merkel2.png',
+    '../img/eurotopia/backdrops/ljm3.png',
+    '../img/eurotopia/backdrops/iran2.png',
     '../img/eurotopia/backdrops/ljm1.png',
+    '../img/eurotopia/backdrops/hottova.png',
 ];
 
 let backdropIndex = 0;
