@@ -93,7 +93,7 @@ function b64toBlob(dataURI) {
 }
 
 const snap = async () => {
-    spinner.style.display = 'block';
+    spinner.innerText = 'Zachytávám koláž';
     preview.style.display = 'block';
     outputCanvas.style.display = 'none';
     video.style.display = 'none';
@@ -125,7 +125,7 @@ const snap = async () => {
             type: 'image/png',
         });
         saveButton.disabled = false;
-        spinner.style.display = 'none';
+        spinner.innerText = '';
     });
 };
 
@@ -133,7 +133,7 @@ const redo = () => {
     preview.style.display = 'none';
     video.style.display = 'block';
     outputCanvas.style.display = 'block';
-    spinner.innerText = 'Photo is being processed';
+    spinner.innerText = '';
     preview.src = '';
     snapButton.disabled = false;
     redoButton.disabled = true;
@@ -144,7 +144,7 @@ const shareASnap = async () => {
     const filesArray = [fileToSave];
     if (navigator.share && navigator.canShare({ files: filesArray })) {
         navigator.share({
-            title: 'Koláž z výstavy',
+            title: 'Koláž z Eurotopie',
             text: 'Posílám koláž vytvořenou v rámci výstava Eurotopia',
             files: filesArray,
         });
@@ -158,7 +158,10 @@ const saveASnapToGithub = async () => {
     });
 
     fileName = `${new Date().getTime()}.png`;
-    spinner.innerText = 'Sharing with Eurotopia crew';
+    spinner.innerText = 'Sdílím s Eurotopií';
+    setTimeout(() => {
+        spinner.innerText = '';
+    }, 5000);
     await fetch(
         `https://api.github.com/repos/galeriearchitektury/gab/contents/docs/img/eurotopia/ar/${fileName}`,
         {
@@ -190,7 +193,6 @@ const saveASnapToGithub = async () => {
             body: data,
         }
     );
-    spinner.innerText = 'Shared with Eurotopia';
 };
 
 const save = () => {
@@ -205,9 +207,11 @@ const toggleAr = () => {
 };
 
 const backdropArray = [
-    '../img/eurotopia/backdrops/lime.png',
-    '../img/eurotopia/backdrops/fuchsia.png',
+    '../img/eurotopia/backdrops/merkel1.png',
+    '../img/eurotopia/backdrops/ljm2.png',
     '../img/eurotopia/backdrops/iran.png',
+    '../img/eurotopia/backdrops/merkel2.png',
+    '../img/eurotopia/backdrops/ljm1.png',
 ];
 
 let backdropIndex = 0;
@@ -218,10 +222,7 @@ const next = () => {
         backdropIndex++;
     }
     image.src = backdropArray[backdropIndex];
-    // nextCount++;
-    // image.src = '../img/eurotopia-demo-next-plakat.png';
-    // image.src = `../img/eurotopia-cta-${nextCount}.png`;
-    // image.src = `/img/eurotopia-cta-${nextCount}.png`;
+    spinner.innerText = 'Načítání obrázku';
 };
 
 const previous = () => {
@@ -231,6 +232,7 @@ const previous = () => {
         backdropIndex--;
     }
     image.src = backdropArray[backdropIndex];
+    spinner.innerText = 'Načítání obrázku';
 };
 
 const toggleControls = () => {
@@ -352,7 +354,7 @@ const variantB = () => {
 
         // let { width: videoWidth, height: videoHeight } = stream
         const settings = stream.getTracks()[0].getSettings();
-        console.log(settings);
+        // console.log(settings);
         videoWidth = Math.min(settings.width, settings.height);
         videoHeight = Math.max(settings.height, settings.width);
 
@@ -360,11 +362,6 @@ const variantB = () => {
         clientHeight = window.innerHeight;
 
         let factor = 1;
-        // factor = Number.parseFloat( Math.min(videoWidth / clientWidth) / Math.max(videoWidth / clientWidth), 100) 
-        // videoWidth <= clientWidth
-        //     ? Number.parseFloat(videoWidth / Math.max(clientWidth, clientHeight), 100)
-        //     : Number.parseFloat(Math.max(clientWidth, clientHeight) / Math.max, 100);
-
 
         factor =
             videoWidth <= clientWidth
@@ -386,25 +383,16 @@ const variantB = () => {
         preview.style.transform = `scale(${factor})`;
         preview.style.transformOrigin = '0 0';
 
-        const boundingRect = document
-            .getElementsByTagName('video')[0]
-            .getBoundingClientRect();
-
-        console.log(boundingRect);
-
-        // const uiPadding = `calc(2rem + ${boundingRect.height}px + 2rem)`;
-        // document.getElementById('ui').style.marginTop = uiPadding;
-
         const imgCanvas = document.createElement('canvas');
         imgCanvas.width = backdropWidth;
         imgCanvas.height = backdropHeight;
         const imgContext = imgCanvas.getContext('2d');
 
         image = new Image();
-        // image.src = '../img/yolo-wide.png';
         image.src = backdropArray[0];
-        // image.src = '../img/eurotopia-demo-next.png';
-        // image.src = '../img/karton.png';
+
+        spinner.innerText = 'Načítání obrázku';
+        image.addEventListener('load', () => (spinner.innerText = ''));
 
         let imageData;
 
@@ -535,13 +523,15 @@ const variantB = () => {
                             maxX = x;
                         }
 
-                        const backdropRatio = 320 / 220
-                        const width = maxX - minX
+                        const backdropRatio = 320 / 220;
+                        const width = maxX - minX;
 
                         if (y > maxY) {
-                            maxY = (Number.parseInt(width / backdropRatio + minY, 10))
+                            maxY = Number.parseInt(
+                                width / backdropRatio + minY,
+                                10
+                            );
                         }
-
                     }
                 }
             }

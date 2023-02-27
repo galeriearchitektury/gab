@@ -124,17 +124,19 @@ button {
     display: none;
 }
 
+button,
 #spinner {
-    display: none;
+    font-size: 2rem;
+}
+
+
+#spinner {
+    /* display: none; */
     color: white;
     align-self: center;
     justify-self: center;
     z-index: 20000;
-}
-
-button,
-#spinner {
-    font-size: 2rem;
+    font-size: 3rem;
 }
 
 #gallery-wrapper {
