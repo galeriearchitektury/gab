@@ -40,8 +40,10 @@ let outputCanvas,
 // wide
 // let backdropWidth = 1700;
 // let backdropHeight = 620;
-let backdropWidth = 3200;
-let backdropHeight = 2200;
+// let backdropWidth = 3200;
+// let backdropHeight = 2200;
+let backdropWidth = 1600;
+let backdropHeight = 1100;
 
 // cardboard
 // let backdropWidth = 410;
@@ -206,15 +208,26 @@ const toggleAr = () => {
         : (outputCanvas.style.display = 'block');
 };
 
+// const backdropArray = [
+//     '../img/eurotopia/backdrops/merkel1.png',
+//     '../img/eurotopia/backdrops/ljm2.png',
+//     '../img/eurotopia/backdrops/iran.png',
+//     '../img/eurotopia/backdrops/merkel2.png',
+//     '../img/eurotopia/backdrops/ljm3.png',
+//     '../img/eurotopia/backdrops/iran2.png',
+//     '../img/eurotopia/backdrops/ljm1.png',
+//     '../img/eurotopia/backdrops/hottova.png',
+// ];
+
 const backdropArray = [
-    '../img/eurotopia/backdrops/merkel1.png',
-    '../img/eurotopia/backdrops/ljm2.png',
-    '../img/eurotopia/backdrops/iran.png',
-    '../img/eurotopia/backdrops/merkel2.png',
-    '../img/eurotopia/backdrops/ljm3.png',
-    '../img/eurotopia/backdrops/iran2.png',
-    '../img/eurotopia/backdrops/ljm1.png',
-    '../img/eurotopia/backdrops/hottova.png',
+    '../img/eurotopia/backdrops/merkel1-medium.png',
+    '../img/eurotopia/backdrops/ljm2-medium.png',
+    '../img/eurotopia/backdrops/iran-medium.png',
+    '../img/eurotopia/backdrops/merkel2-medium.png',
+    '../img/eurotopia/backdrops/ljm3-medium.png',
+    '../img/eurotopia/backdrops/iran2-medium.png',
+    '../img/eurotopia/backdrops/ljm1-medium.png',
+    '../img/eurotopia/backdrops/hottova-medium.png',
 ];
 
 let backdropIndex = 0;
