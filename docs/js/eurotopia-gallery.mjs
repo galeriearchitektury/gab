@@ -20,11 +20,13 @@ const initGallery = async () => {
     );
     const json = await contents.json();
     const fetchedImages = json
+        .filter((img) => img.name !== '.gitkeep')
         // .reverse()
         .map((file) => file.download_url);
 
     const wrapper = document.getElementById('gallery-wrapper');
     fetchedImages
+
         .filter((img) => !knownImages.includes(img))
         .forEach((url, index) => {
             const firstChild = wrapper.firstChild;
