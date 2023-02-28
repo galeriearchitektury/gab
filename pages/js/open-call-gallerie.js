@@ -95,11 +95,28 @@ const greens = {
         '../img/eurotopia/backdrops/greens-medium.png',
         '../img/eurotopia/backdrops/greens-2-medium.png',
     ],
-    author: 'Markéta Gregorová, Majda Slámová',
+    author: ['Markéta Gregorová, Majda Slámová'],
     collective: 'Greens/EFA',
 };
 
-const artworks = [limity, kuba, iran, mda, hottova, greens];
+const max = {
+    text:
+    `
+    The recent conference on the future of Europe was a crucial step towards strengthening the European Union's democratic legitimacy and improving its functioning. The conference brought together representatives from a diverse range of backgrounds, including citizens, civil society organizations, and policymakers, to discuss key issues affecting the EU's future.
+The conference provided an opportunity for citizens to voice their opinions and concerns about the EU's direction and to suggest ideas for reforms. Through its open and inclusive format, the conference helped to bridge the gap between policymakers and citizens and to increase trust and accountability.
+
+Moreover, the conference has the potential to be a permanent addition to the European institutions, as it provides a unique platform for citizens to engage with EU decision-making processes. By making the conference a regular event, citizens would have a more significant say in shaping the EU's policies and priorities, and policymakers would benefit from the direct feedback and insights of citizens.
+
+The conference's success also demonstrates the need for more participatory and inclusive decision-making processes in the EU. The EU's complex and often opaque decision-making processes have been criticized for being distant from citizens and lacking transparency. The conference's participatory approach can help to address these shortcomings by fostering greater transparency, accountability, and responsiveness.
+
+In conclusion, the conference on the future of Europe was a vital step towards strengthening the EU's democratic legitimacy and improving its functioning. By extending this format in the future as a permanent addition to the European institutions, we can create a more participatory and inclusive EU that better represents the interests and concerns of its citizens.
+
+    `,
+    photos: ['../img/eurotopia/backdrops/max-medium.png'],
+    author: ['Max Steverding']
+}
+
+const artworks = [limity, kuba, iran, mda, hottova, greens, max];
 
 window.addEventListener('DOMContentLoaded', (event) => {
     const galleryHolder = document.getElementById('opencall-gallery');

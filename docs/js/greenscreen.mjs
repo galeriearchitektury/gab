@@ -221,11 +221,14 @@ const toggleAr = () => {
 
 const backdropArray = [
     '../img/eurotopia/backdrops/merkel1-medium.png',
+    '../img/eurotopia/backdrops/max-medium.png',
+    '../img/eurotopia/backdrops/greens-2-medium.png',
     '../img/eurotopia/backdrops/ljm2-medium.png',
     '../img/eurotopia/backdrops/iran-medium.png',
     '../img/eurotopia/backdrops/mda-medium.png',
     '../img/eurotopia/backdrops/merkel2-medium.png',
     '../img/eurotopia/backdrops/ljm3-medium.png',
+    '../img/eurotopia/backdrops/greens-2-medium.png',
     '../img/eurotopia/backdrops/iran2-medium.png',
     '../img/eurotopia/backdrops/ljm1-medium.png',
     '../img/eurotopia/backdrops/hottova-medium.png',
