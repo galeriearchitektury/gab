@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Galerie Architektury Brno</title>
-        <link rel="icon" href="../img/favicon.ico" sizes="any" />
+        <link rel="icon" href="../img/favicon.ico" sizes="any"/>
         <!-- 32×32 -->
     </head>
     <body>
@@ -14,7 +14,7 @@
                 <img
                     src="../img/eurotopia-heading.png"
                     alt="Galerie Architektury Brno představuje jako svou první výstavu v cyklu Zoom In práci německého architekta a výzkumníka Maximiliana Steverdinga s názvem Eurotopia: Evropský stoh reprezentací."
-                />
+/>
             </div>
 
             <div id="content">
@@ -47,6 +47,31 @@
                     </div>
                     <div class="narrow detail">
                         <h4>Vernisáž 28. 2. 18:00</h4>
+                        <div class="flex-row">
+                            <h4>Přednáška autora: 10. 3. 18:00</h4>
+                            <a
+                            target="_blank"
+                                    href="https://www.facebook.com/events/6175759349177354"
+                                    >Facebook event</a
+                                >
+                        </div>
+                        <div class="flex-row">
+                            <h4>Navazující workshop: 11. 3. 10:00</h4>
+                            <a
+                            target="_blank"
+                                    href="https://www.facebook.com/events/168000502684778"
+                                    >Facebook event</a
+                                >
+                        </div>
+                        <div class="flex-row">
+                            <h4>Výsledky interaktivní instalace 
+                            </h4>
+                            <a
+                            target="_blank"
+                                    href="/eurotopia-gallery"
+                                    >zde</a
+                                >
+                        </div>
                         <p>
                             Galerie Architektury Brno představuje jako svou
                             první výstavu z celoročního cyklu „Zoom In“ práci
@@ -57,7 +82,7 @@
                         <img
                             src="../img/eurotopia/eurotopia-press-conference.png"
                             alt=""
-                        />
+/>
                         <p>
                             Výzkumný projekt Maximiliana Steverdinga nastiňuje
                             historii reprezentativní architektury Evropského
@@ -70,7 +95,7 @@
                             evropský prostor - a jakou roli v tomto procesu může
                             hrát architektura.
                         </p>
-                        <img src="../img/eurotopia/eurotopia-hall.png" alt="" />
+                        <img src="../img/eurotopia/eurotopia-hall.png" alt=""/>
                         <p>
                             Maximilian Steverding se v současnosti jako odborný
                             asistent na univerzitě v Bonnu zabývá prostorovým
@@ -87,11 +112,36 @@
                         <img
                             src="../img/eurotopia/eurotopia-cameras.png"
                             alt=""
-                        />
+/>
                     </div>
                     <div class="wide detail">
                         <div>
                             <h4>Vernisáž 28. 2. 18:00</h4>
+                            <div class="flex-row">
+                                <h4>Přednáška autora: 10. 3. 18:00</h4>
+                                <a
+                                target="_blank"
+                                    href="https://www.facebook.com/events/6175759349177354"
+                                    >Facebook event</a
+                                >
+                            </div>
+                            <div class="flex-row">
+                                <h4>Navazující workshop: 11. 3. 10:00</h4>
+                                <a
+                                target="_blank"
+                                    href="https://www.facebook.com/events/168000502684778"
+                                    >Facebook event</a
+                                >
+                            </div>
+                            <div class="flex-row">
+                                <h4>Výsledky interaktivní instalace 
+                                </h4>
+                                <a
+                                target="_blank"
+                                    href="/eurotopia-gallery"
+                                    >zde</a
+                                >
+                            </div>
                             <p>
                                 Galerie Architektury Brno představuje jako svou
                                 první výstavu z celoročního cyklu „Zoom In“
@@ -133,17 +183,17 @@
                             <img
                                 src="../img/eurotopia/eurotopia-press-conference.png"
                                 alt=""
-                            />
+/>
 
                             <img
                                 src="../img/eurotopia/eurotopia-hall.png"
                                 alt=""
-                            />
+/>
 
                             <img
                                 src="../img/eurotopia/eurotopia-cameras.png"
                                 alt=""
-                            />
+/>
                         </div>
                     </div>
                 </li>
@@ -201,15 +251,20 @@
                 <span>Středa – neděle 14 – 19</span>
             </footer>
 
-            <link rel="stylesheet" href="../css/style.css" />
+            <link rel="stylesheet" href="../css/style.css"/>
         </div>
     </body>
 </html>
 
 <script>
-    document.querySelectorAll('li').forEach((row) =>
-        row.addEventListener('click', (e) => {
-            row.classList.toggle('expanded');
-        })
-    );
+    document
+        .querySelectorAll('li')
+        .forEach((row) => {
+            const rowDiv = row.querySelector('.row')
+            rowDiv.addEventListener('click', (e) => {
+                row
+                    .classList
+                    .toggle('expanded');
+            })
+        });
 </script>

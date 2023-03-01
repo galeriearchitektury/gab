@@ -238,12 +238,15 @@ h4 {
     align-items: center;
 }
 
-.submission {
+.submission,
+#opencall-gallery > p {
     max-width: 50rem;
-    border-bottom: 1px solid var(--dark-color);
     margin: 1rem;
 }
-
+.submission {
+    border-bottom: 1px solid var(--dark-color);
+    padding-bottom: 1rem;
+}
 .submission img {
     max-width: 50rem;
 }

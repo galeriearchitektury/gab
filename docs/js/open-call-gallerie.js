@@ -100,8 +100,7 @@ const greens = {
 };
 
 const max = {
-    text:
-    `
+    text: `
     The recent conference on the future of Europe was a crucial step towards strengthening the European Union's democratic legitimacy and improving its functioning. The conference brought together representatives from a diverse range of backgrounds, including citizens, civil society organizations, and policymakers, to discuss key issues affecting the EU's future.
 The conference provided an opportunity for citizens to voice their opinions and concerns about the EU's direction and to suggest ideas for reforms. Through its open and inclusive format, the conference helped to bridge the gap between policymakers and citizens and to increase trust and accountability.
 
@@ -113,10 +112,22 @@ In conclusion, the conference on the future of Europe was a vital step towards s
 
     `,
     photos: ['../img/eurotopia/backdrops/max-medium.png'],
-    author: ['Max Steverding']
-}
+    author: ['Max Steverding'],
+};
 
-const artworks = [limity, kuba, iran, mda, hottova, greens, max];
+const via = {
+    collective: 'Nadace Via',
+    author: ['Hana Morávková'],
+    photos: [
+        '../img/eurotopia/backdrops/via-1-medium.png',
+        '../img/eurotopia/backdrops/via-2-medium.png',
+        '../img/eurotopia/backdrops/via-3-medium.png',
+        '../img/eurotopia/backdrops/via-4-medium.png',
+        '../img/eurotopia/backdrops/via-5-medium.png',
+    ],
+};
+
+const artworks = [greens, limity, max, kuba, iran, mda, hottova, via];
 
 window.addEventListener('DOMContentLoaded', (event) => {
     const galleryHolder = document.getElementById('opencall-gallery');
@@ -140,10 +151,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
         wrapper.appendChild(heading);
         if (artwork.collective) {
             const wrp = document.createElement('div');
-            wrp.style.display = 'flex'
+            wrp.style.display = 'flex';
             const h4 = document.createElement('h4');
-            h4.style.marginRight = '.5rem'
-            wrp.style.marginTop = '.5rem'
+            h4.style.marginRight = '.5rem';
+            wrp.style.marginTop = '.5rem';
             const aut = document.createElement('span');
             aut.innerText = artwork.author.join(', ');
             h4.innerText = 'Autorství: ';

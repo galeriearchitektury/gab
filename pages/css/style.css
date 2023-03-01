@@ -131,11 +131,25 @@ footer {
     gap: 0.5rem;
 }
 
-footer a, footer span {
+footer a,
+footer span {
     font-size: 0.75rem;
     text-decoration: none;
     color: var(--dark-color);
     margin-left: 0.5rem;
+}
+
+.flex-row a {
+    text-decoration: none;
+    color: var(--dark-color);
+    margin-left: 0.5rem;
+}
+
+.flex-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-right: 1rem;
 }
 
 @media (min-width: 960px) {
@@ -183,7 +197,8 @@ footer a, footer span {
     }
 }
 
-footer a, footer span {
+footer a,
+footer span {
     font-size: 1rem;
 }
 
@@ -198,7 +213,7 @@ address {
 }
 
 h4 {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 }
 
 .opencall li {
