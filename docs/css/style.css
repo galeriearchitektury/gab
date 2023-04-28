@@ -115,6 +115,11 @@ li {
     flex-wrap: wrap;
 }
 
+.wide img {
+    max-width: 100%;
+    max-height: 40rem;
+}
+
 p {
     margin-bottom: 1rem;
     margin-right: 1rem;
